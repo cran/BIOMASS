@@ -11,7 +11,7 @@ correctTaxo(genus, species, score = 0.5)
 }
 \arguments{
   \item{genus}{
-  Vector of genus to be checked.
+  Vector of genus to be checked. Alternatively, the whole species name (genus + species) or (genus + species + author) may be given (see example).
 }
   \item{species}{
   Vector of species to be checked (same size as the genus vector).
@@ -33,5 +33,6 @@ Ariane TANGUY, Maxime REJOU-MECHAIN
 }
 
 \examples{
+\dontrun{correctTaxo(genus = "Astrocarium", species="standleanum")}
 \dontrun{correctTaxo(genus = "Astrocarium standleanum")}
 }

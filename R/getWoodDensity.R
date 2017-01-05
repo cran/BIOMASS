@@ -35,10 +35,12 @@ getWoodDensity <- function(genus, species, stand = NULL, family = NULL, region =
   
   if(!is.null(addWoodDensityData))
   {
-    if(any(names(addWoodDensityData) != c("family","genus","species","wd")))
-      stop("The additional wood density database should be organized in a dataframe with four columns: 
-           \"family\",\"genus\",\"species\",\"wd\" (column order and names should be respected)")
-    
+    if(any(names(addWoodDensityData) != c("genus","species","wd")))
+      stop("The additional wood density database should be organized in a dataframe with three columns: 
+           \"genus\",\"species\",\"wd\" (column order and names should be respected)")
+    addWoodDensityData$family <- getTaxonomy(addWoodDensityData$genus)$family
+    addWoodDensityData <- addWoodDensityData[,c("family","genus","species","wd")]
+    addWoodDensityData <- addWoodDensityData[!is.na(addWoodDensityData$wd),]
     subWdData <- rbind(subWdData, addWoodDensityData)
   }
   
@@ -85,7 +87,7 @@ getWoodDensity <- function(genus, species, stand = NULL, family = NULL, region =
   allMeanGen <- allMeanGen[order(allMeanGen$genus),]
   allMeanGen$meanWDgen <- tapply(allMeanSp$meanWDsp, allMeanSp$genus, mean)
   allMeanGen$nIndGen <- tapply(allMeanSp$meanWDsp, allMeanSp$genus, length)
-
+  
   # Combine original datasets with mean WD at genus and species level
   meanData <- merge(inputData, allMeanGen, all.x = TRUE)
   meanData <- merge(meanData, allMeanSp, all.x = TRUE)
@@ -100,7 +102,7 @@ getWoodDensity <- function(genus, species, stand = NULL, family = NULL, region =
   meanData$nInd[filter] <- meanData$nIndSp[filter]
   meanData$levelWD[filter] <- "species"   
   meanData$sdWD[filter] <- sd_10$sd[sd_10$taxo == "species"]
-
+  
   ###################################
   # At the genus level
   filter <- (is.na(meanData$meanWD) & !is.na(meanData$meanWDgen))
@@ -117,7 +119,7 @@ getWoodDensity <- function(genus, species, stand = NULL, family = NULL, region =
     allMeanFam$meanWDfam <- tapply(allMeanGen$meanWDgen, allMeanGen$family, mean)
     allMeanFam$nIndFam <- tapply(allMeanGen$meanWDgen, allMeanGen$family, length)
     allMeanFam$sdWdfam <- tapply(allMeanGen$meanWDgen, allMeanGen$family, sd)
-
+    
     meanData <- merge(meanData, allMeanFam, all.x = TRUE)
     
     ###################################
@@ -136,14 +138,14 @@ getWoodDensity <- function(genus, species, stand = NULL, family = NULL, region =
     standWD <- data.frame(meanStand = tapply(meanData$meanWD, meanData$stand, mean, na.rm = TRUE),
                           sdStand = tapply(meanData$meanWD, meanData$stand, sd, na.rm = TRUE),
                           nIndStand = tapply(meanData$meanWD, meanData$stand, function(x) length(x[!is.na(x)])))
-
+    
     meanData <- merge(meanData, standWD, by.x = "stand", by.y = "row.names", all.x = T)
     filter <- is.na(meanData$meanWD)
     meanData$meanWD[filter] <- meanData$meanStand[filter]
     meanData$nInd[filter] <- meanData$nIndStand[filter]
     meanData$sdWD[filter] <- meanData$sdStand[filter]
     meanData$levelWD[filter] <- meanData$stand[filter]
-
+    
   }
   
   # If some values are still NA, set the Wood density of the whole dataset
@@ -158,6 +160,6 @@ getWoodDensity <- function(genus, species, stand = NULL, family = NULL, region =
   
   if(nrow(result) != nrow(inputData)) 
     warning(paste("The input and the output tables have a different number of rows"))
-
+  
   return(result) 
 }

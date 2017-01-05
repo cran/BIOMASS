@@ -14,9 +14,6 @@ retrieveH <- function(D, model = NULL, coord = NULL, region = NULL)
     # Second case : with the coordinates of your site, find the E index and estimate the H following Chave et al. 2014 Global Change Biology
     if(!is.null(coord))
     {
-      warning("Using this method (Chave et al. 2014) to approximate H and then compute AGB generates an error of 1%. 
-              We recommend to directly use the coordinates to get the AGB thanks to the AGBmonteCarlo function.")
-      
       if(is.null(dim(coord))) 
         coord <- as.matrix(t(coord))
       

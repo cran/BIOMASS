@@ -26,7 +26,7 @@ The E index is extracted from a raster file (2.5 arc-second resolution, or ca. 5
 The function returns \code{E}, the environmental index computed thanks to the Chave et al 2014 formula.
 }
 \references{
-Chave et al. (2014) \emph{Improved allometric models to estimate the above-ground biomass of tropical trees}, Global Change Biology, 20 (10), 3177-3190
+Chave et al. (2014) \emph{Improved allometric models to estimate the aboveground biomass of tropical trees}, Global Change Biology, 20 (10), 3177-3190
 }
 \author{
 Jerome CHAVE, Maxime REJOU-MECHAIN, Ariane TANGUY

@@ -1,17 +1,19 @@
 Package: BIOMASS
 Type: Package
-Title: Estimating Above-Ground Biomass and Its Uncertainty in Tropical
+Title: Estimating Aboveground Biomass and Its Uncertainty in Tropical
         Forests
-Version: 1.0
-Date: 2016-08-24
+Version: 1.1
+Date: 2017-01-03
 Author: Maxime REJOU-MECHAIN, Ariane TANGUY, Camille PIPONIOT, Jerome CHAVE, Bruno HERAULT
 Maintainer: Maxime REJOU-MECHAIN <maxime.rejou@gmail.com>
-Description: Contains data analysis functions to estimate above-ground biomass and its uncertainty in tropical forests. BIOMASS functions allow to (1) retrieve and to correct taxonomy, (2) estimate wood density and its uncertainty, (3) construct height-diameter models, (4) estimate the above-ground biomass at the stand level with associated uncertainty.
+Description: Contains functions to estimate aboveground biomass/carbon and its uncertainty in tropical forests. These functions allow to (1) retrieve and to correct taxonomy, (2) estimate wood density and its uncertainty, (3) construct height-diameter models, (4) estimate the above-ground biomass/carbon at the stand level with associated uncertainty. To cite BIOMASS, please use citation("BIOMASS").
 License: GPL-2
 Depends: R(>= 2.10.0)
 Imports: minpack.lm, raster, msm, httr, jsonlite, methods, graphics,
         stats, utils
+VignetteBuilder: knitr
+Suggests: knitr
 NeedsCompilation: no
-Packaged: 2016-09-21 14:50:44 UTC; U051-E826
+Packaged: 2017-01-05 09:46:38 UTC; rejou-mechain
 Repository: CRAN
-Date/Publication: 2016-09-21 19:27:29
+Date/Publication: 2017-01-05 11:55:19

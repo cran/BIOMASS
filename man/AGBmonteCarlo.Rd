@@ -2,14 +2,14 @@
 \alias{AGBmonteCarlo}
 
 \title{
-Propagating above-ground biomass (AGB) errors to the stand level
+Propagating above-ground biomass (AGB) or carbon (AGC) errors to the stand level
 }
 \description{
-Propagation of the errors throughought the steps needed to compute AGB.
+Propagation of the errors throughought the steps needed to compute AGB or AGC.
 }
 \usage{
 AGBmonteCarlo(D, WD = NULL, errWD = NULL, H = NULL, errH = NULL, HDmodel = NULL, 
-coord = NULL, Dpropag = NULL, n = 1000)
+coord = NULL, Dpropag = NULL, n = 1000, Carbon = FALSE, Dlim = NULL)
 }
 \arguments{
   \item{D}{
@@ -40,17 +40,31 @@ coord = NULL, Dpropag = NULL, n = 1000)
   \item{n}{
   Number of iteration. Cannot be smaller than 50 or larger than 1000. By default \code{n = 1000}
 }
+  \item{Carbon}{
+  (logical) Wether or not the propagation should be done up to the carbon value (FALSE by default).
+}
+  \item{Dlim}{
+  (optional) Minimum diameter (in cm) for which aboveground biomass should be calculated (all diameter below \code{Dlim} will have a 0 value in the output).
+}
 }
 \details{
 See Rejou-Mechain et al. (in prep) for all details on the error propagation procedure.
 }
 \value{
-Returns a list  with: 
+Returns a list  with (if Carbon is FALSE): 
 \item{meanAGB}{Mean stand AGB value following the error propagation}
 \item{medAGB}{Median stand AGB value following the error propagation}
 \item{sdAGB}{Standard deviation of the stand AGB value following the error propagation}
 \item{credibilityAGB}{Credibility interval at 95\% of the stand AGB value following the error propagation}
 \item{AGB_simu}{Matrix with the AGB of the trees (rows) times the n iterations (columns)}
+
+Returns a list  with (if Carbon is TRUE): 
+\item{meanAGC}{Mean stand AGC value following the error propagation}
+\item{medAGC}{Median stand AGC value following the error propagation}
+\item{sdAGC}{Standard deviation of the stand AGC value following the error propagation}
+\item{credibilityAGC}{Credibility interval at 95\% of the stand AGC value following the error propagation}
+\item{AGC_simu}{Matrix with the AGC of the trees (rows) times the n iterations (columns)}
+
 }
 \references{
 Chave, J. et al. (2004). \emph{Error propagation and scaling for tropical forest biomass estimates}. Philosophical Transactions of the Royal Society B: Biological Sciences, 359(1443), 409-420.

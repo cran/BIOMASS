@@ -1,4 +1,5 @@
-AGBmonteCarlo <- function(D, WD = NULL, errWD = NULL, H = NULL, errH = NULL, HDmodel = NULL, coord = NULL, Dpropag = NULL, n = 1000)
+AGBmonteCarlo <- function(D, WD = NULL, errWD = NULL, H = NULL, errH = NULL, 
+                          HDmodel = NULL, coord = NULL, Dpropag = NULL, n = 1000, Carbon = FALSE, Dlim = NULL)
 {  
   if(n > 1000 | n < 50) 
     stop("n cannot be smaller than 50 or larger than 1000")
@@ -55,7 +56,7 @@ AGBmonteCarlo <- function(D, WD = NULL, errWD = NULL, H = NULL, errH = NULL, HDm
   }
   else
     stop("The WD and errWD arguments must be not NULL")
-
+  
   
   # --------------------- H ---------------------
   
@@ -158,11 +159,21 @@ AGBmonteCarlo <- function(D, WD = NULL, errWD = NULL, H = NULL, errH = NULL, HDm
     AGB_simu <- exp(AGB_simu)/1000
   }  
   
-  res <- list(meanAGB = mean(apply(AGB_simu, 2, sum, na.rm = T)), 
-              medAGB = median(apply(AGB_simu, 2, sum, na.rm = T)), 
-              sdAGB = sd(apply(AGB_simu, 2, sum, na.rm = T)), 
-              credibilityAGB = quantile(apply(AGB_simu, 2, sum, na.rm = T), probs = c(0.025,0.975)), 
-              AGB_simu = AGB_simu)
+  if(!is.null(Dlim)) AGB_simu[D<Dlim,] <- 0  
   
+  if(Carbon == FALSE){
+    res <- list(meanAGB = mean(apply(AGB_simu, 2, sum, na.rm = T)), 
+                medAGB = median(apply(AGB_simu, 2, sum, na.rm = T)), 
+                sdAGB = sd(apply(AGB_simu, 2, sum, na.rm = T)), 
+                credibilityAGB = quantile(apply(AGB_simu, 2, sum, na.rm = T), probs = c(0.025,0.975)), 
+                AGB_simu = AGB_simu)
+  }else{
+    AGC_simu <- AGB_simu*rnorm(mean = 47.13, sd = 2.06,n = n*length(D))/100 # Biomass to carbon ratio calculated from Thomas and Martin 2012 forests data stored in DRYAD (tropical angiosperm stems carbon content)
+    res <- list(meanAGC = mean(apply(AGC_simu, 2, sum, na.rm = T)), 
+                medAGC = median(apply(AGC_simu, 2, sum, na.rm = T)), 
+                sdAGC = sd(apply(AGC_simu, 2, sum, na.rm = T)), 
+                credibilityAGC = quantile(apply(AGC_simu, 2, sum, na.rm = T), probs = c(0.025,0.975)), 
+                AGC_simu = AGC_simu)
+  }
   return(res)
 }

@@ -1,4 +1,4 @@
-computeAGB <- function(D, WD, H = NULL, coord = NULL)
+computeAGB <- function(D, WD, H = NULL, coord = NULL, Dlim = NULL)
 {  
   ### Compute the Above Ground Biomass in Mg/ha
   if(length(D) != length(WD))
@@ -39,6 +39,6 @@ you may construct a height-diameter model to overcome that issue (see ?HDFunctio
     else
       stop("You need to provide either H or coord")
   }
-  warning("AGB ESTIMATES ARE NOT TRUE VALUES! To assess the errors associated with your AGB estimates, please consider the AGBmonteCarlo function")
+  if(!is.null(Dlim)) AGB[D<Dlim] <- 0 
   return(AGB)
 }

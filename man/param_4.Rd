@@ -21,7 +21,7 @@ priors through a Metropolis algorithm.
 This dataset is used in the function \code{\link{AGBmonteCarlo}}.
 }
 \references{
-Chave et al. (2014) \emph{Improved allometric models to estimate the above-ground biomass of tropical trees}, Global Change Biology, 20 (10), 3177-3190}
+Chave et al. (2014) \emph{Improved allometric models to estimate the aboveground biomass of tropical trees}, Global Change Biology, 20 (10), 3177-3190}
 \examples{
 data(param_4)
 str(param_4)

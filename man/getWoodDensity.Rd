@@ -46,7 +46,7 @@ getWoodDensity(genus, species, stand = NULL, family = NULL, region = "World",
   }
   }
   \item{addWoodDensityData}{
-  A dataframe containing additional wood density data to be combined with the global wood density database. The dataframe should be organized in a dataframe with four columns: "family","genus","species","wd" (column order and names should be respected).
+  A dataframe containing additional wood density data to be combined with the global wood density database. The dataframe should be organized in a dataframe with three columns: "genus","species","wd" (column order and names should be respected).
   }
 }
 \details{

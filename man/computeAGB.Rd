@@ -8,7 +8,7 @@ Computing tree above-ground biomass (AGB)
 This function uses the Chave's pantropical models to estimate the above-ground biomass of tropical trees.
 }
 \usage{
-computeAGB(D, WD, H = NULL, coord = NULL)
+computeAGB(D, WD, H = NULL, coord = NULL, Dlim = NULL)
 }
 
 \arguments{
@@ -24,6 +24,9 @@ computeAGB(D, WD, H = NULL, coord = NULL)
   \item{coord}{
   (optional) Coordinates of the site(s), either a vector giving a single site (e.g. c(longitude, latitude)) or a matrix/dataframe with two columns (e.g. cbind(longitude, latitude)). The coordinates are used to account for variation in height-diameter relationship thanks to an environmental proxy (parameter E in Chave et al. 2014). Compulsory if tree heights \code{H} are not given.
 }
+  \item{Dlim}{
+  (optional) Minimum diameter (in cm) for which aboveground biomass should be calculated (all diameter below \code{Dlim} will have a 0 value in the output).
+}
 }
 \details{
 This function uses two different ways of computing the above-ground biomass of a tree: 
@@ -38,7 +41,7 @@ This function uses two different ways of computing the above-ground biomass of a
 The function returns the ABG in Mg (or ton).
 }
 \references{
-Chave et al. (2014) \emph{Improved allometric models to estimate the above-ground biomass of tropical trees}, Global Change Biology, 20 (10), 3177-3190
+Chave et al. (2014) \emph{Improved allometric models to estimate the aboveground biomass of tropical trees}, Global Change Biology, 20 (10), 3177-3190
 }
 \author{
 Maxime REJOU-MECHAIN, Ariane TANGUY	
