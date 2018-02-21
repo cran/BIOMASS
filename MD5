@@ -1,4 +1,4 @@
-4b09de2b8fd5eaf166582c0339c6980b *DESCRIPTION
+d635d846ff3e4543f763b1ecbae3abec *DESCRIPTION
 2880d5982fec3b0df51f2b50c0ae1190 *NAMESPACE
 fbc5aeca92461c0aaffa6419c49c7a00 *NEWS
 eb204f0fe158f5bca5fb045cfc426f78 *R/AGBmonteCarlo.R
@@ -16,8 +16,8 @@ a357c039c6d1e9ca5306413c6a7c9283 *R/predictHeight.R
 274db946ddcdf32643a20ea38ecd4b2c *R/printFitData.R
 b75a17c53b4481df190501b35855d418 *R/retrieveH.R
 4777456c0ad3f97888f5962c43dc36a4 *R/weibullFunction.R
-7fe4a72ac79b606a89229bf92ed7455a *build/partial.rdb
-cd4e8190159f3c6d7e827fb0b09f578c *build/vignette.rds
+3257cb468507a850717115fc3f08ee09 *build/partial.rdb
+b2302c7ffac7aec25d86318f98b98a02 *build/vignette.rds
 639b99828dc978352a54840ed01a9f67 *data/KarnatakaForest.rda
 104c695d7fcb892940fd71bc2b2f0b79 *data/NouraguesHD.rda
 6740383aaa759491dafbbb5d49f15d4d *data/apgFamilies.rda
@@ -29,7 +29,7 @@ cd4e8190159f3c6d7e827fb0b09f578c *build/vignette.rds
 8abfc5844451dc585938d520f78f1fac *data/wdData.rda
 11e410ac8344783c6c1ed5aa87660336 *inst/doc/VignetteBiomass.R
 545b93c7818e072fa0549a4b472f6668 *inst/doc/VignetteBiomass.Rmd
-9790f1adf614c6e5d826a46407bb7a0a *inst/doc/VignetteBiomass.html
+564bbec2ec645b9847982fc23ce0272d *inst/doc/VignetteBiomass.html
 b65c00547e04626adfb4b68bff6389d2 *man/AGBmonteCarlo.Rd
 c84117b1dd73408cd5540d8aaf032f97 *man/BIOMASS-package.Rd
 3792c8e9af9b3c0122a0c3a1db47b91f *man/HDmethods.Rd
