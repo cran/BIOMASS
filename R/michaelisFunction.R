@@ -1,55 +1,54 @@
-michaelisFunction <- function(data, weight = NULL)
-{
+#' @rdname HDmethods
+#' @importFrom minpack.lm nlsLM nls.lm.control
+#' @importFrom methods is
+
+michaelisFunction <- function(data, weight = NULL) {
   ### Compute the michaelis model of the H-D relationship
-  
+
   H <- data$H
   D <- data$D
-  
+
   count <- 1
   maxIter <- 50
   converge <- FALSE
-  
-  if(is.null(weight))
-  {
-    while(converge == FALSE && count <= 10)
-    {
-      tt <- tryCatch(minpack.lm::nlsLM(H ~ SSmicmen(D, A, B), 
-                                       control = minpack.lm::nls.lm.control(maxiter = maxIter)),
-                     error = function(e) e, 
-                     warning = function(w) w)
-      
-      if(is(tt, "warning"))
-      {
-        count <- count + 1
-        maxIter <- maxIter + 50
+
+  if (anyNA(weight)) weight <- NULL
+
+  while (converge == FALSE && count <= 10) {
+    tt <- tryCatch({
+      if (is.null(weight)) {
+        nlsLM(H ~ SSmicmen(D, A, B),
+          control = nls.lm.control(maxiter = maxIter)
+        )
+      } else {
+        nlsLM(H ~ SSmicmen(D, A, B),
+          weights = weight,
+          control = nls.lm.control(maxiter = maxIter)
+        )
       }
-      else
-        converge <- TRUE
+    },
+    error = function(e) e,
+    warning = function(w) w
+    )
+
+    if (is(tt, "warning")) {
+      count <- count + 1
+      maxIter <- maxIter + 50
     }
-    model <- minpack.lm::nlsLM(H ~ SSmicmen(D, A, B), 
-                               control = minpack.lm::nls.lm.control(maxiter = maxIter))
-  }
-  else
-  {
-    while(converge == FALSE && count <= 10)
-    {
-      tt <- tryCatch(minpack.lm::nlsLM(H ~ SSmicmen(D, A, B), 
-                                       weights = weight,
-                                       control = minpack.lm::nls.lm.control(maxiter = maxIter)),
-                     error = function(e) e, 
-                     warning = function(w) w)
-      
-      if(is(tt, "warning"))
-      {
-        count <- count + 1
-        maxIter <- maxIter + 50
-      }
-      else
-        converge <- TRUE
+    else {
+      converge <- TRUE
     }
-    model <- minpack.lm::nlsLM(H ~ SSmicmen(D, A, B), 
-                               weights = weight,
-                               control = minpack.lm::nls.lm.control(maxiter = maxIter))
   }
+  model <- if (is.null(weight)) {
+    nlsLM(H ~ SSmicmen(D, A, B),
+      control = nls.lm.control(maxiter = maxIter)
+    )
+  } else {
+    nlsLM(H ~ SSmicmen(D, A, B),
+      weights = weight,
+      control = nls.lm.control(maxiter = maxIter)
+    )
+  }
+
   return(model)
 }
