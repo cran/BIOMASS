@@ -56,6 +56,7 @@ attributeTree <- function(xy, plot, coordAbs) {
 
   Coord <- data.table(xy, plot = plot)
   setnames(Coord, colnames(Coord), c("X", "Y", "plot"))
+  Coord[, order := .I]
   setDT(coordAbs)
 
   # Attribute the trees to the subplot
@@ -66,5 +67,9 @@ attributeTree <- function(xy, plot, coordAbs) {
     ]
   }))
 
-  return(Coord[, subplot])
+  if (anyNA(Coord[, subplot])) {
+    warning("There is trees which are not assigned in a subplot")
+  }
+
+  return(Coord[order(order), subplot])
 }

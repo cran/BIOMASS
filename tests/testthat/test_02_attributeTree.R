@@ -44,5 +44,10 @@ test_that("attribute the trees error", {
 
   plot <- rep(c("plot1", "plot2"), each = 4, length.out = nrow(xy))
 
-  expect_true(all(is.na(rev(attributeTree(xy, plot, cut))[1:3])))
+  expect_warning(attributeTree(xy, plot, cut), "not assigned")
+
+  sub <- suppressWarnings(attributeTree(xy, plot, cut))
+  sub <- rev(sub)[1:3]
+
+  expect_true(all(is.na(sub)))
 })

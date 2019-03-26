@@ -26,6 +26,8 @@ test_that("Compute E", {
   expect_length(E, 50)
 
   expect_equal(computeE(cbind(12, 50)), 1.129928, tolerance = 0.1)
+
+  expect_error(computeE(cbind(long = -20, lat = 4)), "coordinate")
 })
 
 
@@ -112,7 +114,6 @@ test_that("loglog function", {
 
   expect_is(loglogFunction(data, "log1"), "lm")
   expect_is(loglogFunction(data, "log2"), "lm")
-  expect_is(loglogFunction(data, "log3"), "lm")
 })
 
 test_that("Michaelis function", {
@@ -133,7 +134,7 @@ test_that("Weibull function", {
 
 context("Predict Height of the tree")
 
-for (method in c("log1", "log2", "log3", "weibull", "michaelis")) {
+for (method in c("log1", "log2", "weibull", "michaelis")) {
   test_that(paste("predictHeight", method), {
     skip_if_not_function("predictHeight")
     HDmodel <- modelHD(
@@ -145,6 +146,11 @@ for (method in c("log1", "log2", "log3", "weibull", "michaelis")) {
     for (err in c(T, F)) {
       expect_length(predictHeight(D, HDmodel, err = err), length(D))
       expect_is(predictHeight(D, HDmodel, err = err), "numeric")
+
+      if (err == T) {
+        H <- predictHeight(rep(10, 10), HDmodel, err = err)
+        expect_false(all(H == H[1]))
+      }
     }
   })
 }

@@ -22,6 +22,7 @@
 #'    - `corner`: a matrix with the coordinates of the corners
 #'    - `polygon`: a spatial polygon
 #'    - `outliers`: Coordinates lines considered as outliers, if any
+#'    - `codeUTM`: the code UTM for the coordinate if the parameter `longlat` is set
 #'
 #'
 #'
@@ -49,7 +50,7 @@
 #'   X = c(rep(0, 10), rep(100, 10)),
 #'   Y = c(rep(c(rep(0, 5), rep(100, 5)), 2))
 #' )
-#' 
+#'
 #' aa <- correctCoordGPS(
 #'   projCoord = projCoord, coordRel = coordRel,
 #'   rangeX = c(0, 100), rangeY = c(0, 100)
@@ -64,7 +65,7 @@
 #'   rangeX = c(0, 100), rangeY = c(0, 100), drawPlot = TRUE
 #' )
 #' }
-#' 
+#'
 correctCoordGPS <- function(longlat = NULL, projCoord = NULL, coordRel, rangeX, rangeY,
                             maxDist = 10, drawPlot = FALSE, rmOutliers = FALSE) {
 
@@ -102,7 +103,9 @@ correctCoordGPS <- function(longlat = NULL, projCoord = NULL, coordRel, rangeX, 
 
   # Transform the geographic coordinate into UTM coordinate
   if (!is.null(longlat)) {
-    projCoord <- latlong2UTM(longlat)[, c("X", "Y")]
+    projCoord <- latlong2UTM(longlat)
+    codeUTM <- unique(projCoord[, "codeUTM"])
+    projCoord <- projCoord[, c("X", "Y")]
   }
 
   # Transformation CoordRel to CoordAbs
@@ -116,7 +119,7 @@ correctCoordGPS <- function(longlat = NULL, projCoord = NULL, coordRel, rangeX, 
 
 
   # retransform the coordRel without the outliers
-  if (rmOutliers) {
+  if (rmOutliers & length(outliers)>0) {
     res <- procrust(projCoord[-outliers, ], coordRel[-outliers, ])
     coordAbs <- as.matrix(coordRel) %*% res$rotation
     coordAbs <- sweep(coordAbs, 2, res$translation, FUN = "+")
@@ -142,23 +145,35 @@ correctCoordGPS <- function(longlat = NULL, projCoord = NULL, coordRel, rangeX, 
 
 
   if (drawPlot) {
-    plot(projCoord[-outliers, ],
+    par(xpd = T, mar = par("mar") + c(0, 0, 0, 7.5))
+    plot(if(length(outliers)==0) projCoord else projCoord[-outliers, ],
       col = "grey30", main = "Plot drawing",
       xlim = range(projCoord[, 1], coordAbs[, 1]),
       ylim = range(projCoord[, 2], coordAbs[, 2]),
       asp = 1, xlab = "X", ylab = "Y", axes = F, frame.plot = F
     )
-    grid(col = "grey80", lty = 1)
+
+    usr <- par("usr")
+    grid <- sapply(par(c("xaxp", "yaxp")), function(x) {
+      seq(x[1], x[2], length.out = x[3] + 1)
+    }, simplify = F)
+    # draw the grid
+    segments(x0 = grid$xaxp, y0 = usr[3], y1 = usr[4], col = "grey80", lty = 1)
+    segments(y0 = grid$yaxp, x0 = usr[1], x1 = usr[2], col = "grey80", lty = 1)
+    # draw the axis
     axis(side = 1, lty = "blank", las = 1)
     axis(side = 2, lty = "blank", las = 1)
-    plot(sps, add = T)
+    plot(sps, add = T, lwd = 3)
     points(coordAbs, col = "black", pch = 15, cex = 1.3)
-    points(projCoord[outliers, ], col = "red", pch = 4, cex = 1)
+    if(length(outliers)>0) points(projCoord[outliers, ], col = "red", pch = 4, cex = 1)
 
-    legend("center", c("GPS measurements", ifelse(rmOutliers, "outliers (discarded)", "outliers"), "Corrected coord"),
+    legend(
+      x = usr[2], y = grid$yaxp[length(grid$yaxp) - 1],
+      c("GPS measurements", ifelse(rmOutliers, "Outliers (discarded)", "Outliers"), "Corrected coord"),
       col = c("grey30", "red", "black"),
-      pch = c(1, 4, 15), bg = "grey90"
+      pch = c(1, 4, 15, 49), bg = "grey90"
     )
+    par(xpd = NA, mar = c(5, 4, 4, 2) + 0.1)
   }
 
 
@@ -173,6 +188,12 @@ correctCoordGPS <- function(longlat = NULL, projCoord = NULL, coordRel, rangeX, 
     )
   }
 
-
-  return(list(corner = cornerCoord, polygon = sps, outliers = outliers))
+  output <- list(
+    cornerCoords = data.frame(X = cornerCoord[, 1], Y = cornerCoord[, 2]),
+    polygon = sps, outliers = outliers
+  )
+  if (!is.null(longlat)) {
+    output$codeUTM <- codeUTM
+  }
+  return(output)
 }
