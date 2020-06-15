@@ -2,16 +2,16 @@ Package: BIOMASS
 Type: Package
 Title: Estimating Aboveground Biomass and Its Uncertainty in Tropical
         Forests
-Version: 2.1.1
-Date: 2019-05-03
+Version: 2.1.2
+Date: 2020-05-20
 Authors@R: c(
 	person("Maxime", "Réjou-Méchain", email = "maxime.rejou@gmail.com", role = c("aut", "cre", "dtc")),
+	person("Arthur", "Pere", email = "arthur.pere@cirad.fr", role = c("aut")),
+	person("Guillaume","Cornu", email = "gcornu@cirad.fr", role = c("aut"), comment = c(ORCID="0000-0002-7523-5176")),	
 	person("Ariane", "Tanguy", role = c("aut")),
 	person("Camille", "Piponiot", role = c("aut")),
 	person("Jerome", "Chave", email = "jerome.chave@univ-tlse3.fr", role = c("dtc")),
-	person("Bruno", "Herault", email = "bruno.herault@cirad.fr", role = c("aut")),
-	person("Arthur", "Pere", email = "arthur.pere@cirad.fr", role = c("aut")),
-	person("Guillaume","Cornu", email = "gcornu@cirad.fr", role = c("aut"), comment = c(ORCID="0000-0002-7523-5176")),
+	person("Bruno", "Hérault", email = "bruno.herault@cirad.fr", role = c("aut")),
 	person("Ted", "Feldpausch", email = "T.R.Feldpausch@exeter.ac.uk", role = c("dtc")),
 	person("Philippe", "Verley", email = "philippe.verley@ird.fr ", role = c("ctb"))
   )
@@ -34,16 +34,16 @@ Suggests: httr, knitr, rmarkdown, testthat, covr, proj4, MCMCglmm,
         rvest, prettydoc, usethis, taxize, lmfor, sf
 RoxygenNote: 6.1.1
 NeedsCompilation: no
-Packaged: 2019-05-03 15:00:40 UTC; rejou
+Packaged: 2020-06-15 10:19:38 UTC; rejou
 Author: Maxime Réjou-Méchain [aut, cre, dtc],
+  Arthur Pere [aut],
+  Guillaume Cornu [aut] (<https://orcid.org/0000-0002-7523-5176>),
   Ariane Tanguy [aut],
   Camille Piponiot [aut],
   Jerome Chave [dtc],
-  Bruno Herault [aut],
-  Arthur Pere [aut],
-  Guillaume Cornu [aut] (<https://orcid.org/0000-0002-7523-5176>),
+  Bruno Hérault [aut],
   Ted Feldpausch [dtc],
   Philippe Verley [ctb]
 Maintainer: Maxime Réjou-Méchain <maxime.rejou@gmail.com>
 Repository: CRAN
-Date/Publication: 2019-05-03 15:20:25 UTC
+Date/Publication: 2020-06-15 10:40:03 UTC
