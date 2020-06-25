@@ -1,46 +1,46 @@
-## ----setup, include=FALSE------------------------------------------------
+## ----setup, include=FALSE-----------------------------------------------------
 knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 test <- TRUE
 CACHE <- TRUE
 require(knitr)
 require(BIOMASS)
 
-## ---- eval=F-------------------------------------------------------------
+## ---- eval=F------------------------------------------------------------------
 #  install.packages("BIOMASS")
 
-## ---- eval=F-------------------------------------------------------------
+## ---- eval=F------------------------------------------------------------------
 #  require(BIOMASS)
 #  require(knitr) # To build tables in this document
 
-## ---- cache=CACHE--------------------------------------------------------
+## ---- cache=CACHE-------------------------------------------------------------
 data(KarnatakaForest)
 str(KarnatakaForest)
 #
 data(NouraguesHD)
 str(NouraguesHD)
 
-## ---- cache=CACHE--------------------------------------------------------
+## ---- cache=CACHE-------------------------------------------------------------
 selecPlot <- KarnatakaForest$plotId %in% c("BSP2", "BSP12", "BSP14", "BSP26", "BSP28", "BSP30", "BSP34", "BSP44", "BSP63", "BSP65")
 KarnatakaForestsub <- droplevels(KarnatakaForest[selecPlot, ])
 
-## ----eval=test, cache=CACHE----------------------------------------------
+## ----eval=test, cache=CACHE---------------------------------------------------
 Taxo <- correctTaxo(genus = KarnatakaForestsub$genus, species = KarnatakaForestsub$species, useCache = T, verbose = F)
 KarnatakaForestsub$genusCorr <- Taxo$genusCorrected
 KarnatakaForestsub$speciesCorr <- Taxo$speciesCorrected
 
-## ----eval=test, cache=CACHE----------------------------------------------
+## ----eval=test, cache=CACHE---------------------------------------------------
 APG <- getTaxonomy(KarnatakaForestsub$genusCorr, findOrder = T)
 KarnatakaForestsub$familyAPG <- APG$family
 KarnatakaForestsub$orderAPG <- APG$order
 
-## ----eval=test, cache=CACHE----------------------------------------------
+## ----eval=test, cache=CACHE---------------------------------------------------
 dataWD <- getWoodDensity(
   genus = KarnatakaForestsub$genusCorr,
   species = KarnatakaForestsub$speciesCorr,
   stand = KarnatakaForestsub$plotId
 )
 
-## ----eval=test, cache=CACHE----------------------------------------------
+## ----eval=test, cache=CACHE---------------------------------------------------
 LocalWoodDensity <- data.frame(
   genus = c("Ziziphus", "Terminalia", "Garcinia"),
   species = c("oenopolia", "bellirica", "indica"),
@@ -55,7 +55,7 @@ dataWD <- getWoodDensity(
   addWoodDensityData = LocalWoodDensity
 )
 
-## ----eval=test, cache=CACHE----------------------------------------------
+## ----eval=test, cache=CACHE---------------------------------------------------
 # At species level
 sum(dataWD$levelWD == "species")
 # At genus level
@@ -63,7 +63,7 @@ sum(dataWD$levelWD == "genus")
 # At plot level
 sum(!dataWD$levelWD %in% c("genus", "species"))
 
-## ----echo=TRUE, cache=CACHE----------------------------------------------
+## ----echo=TRUE, cache=CACHE---------------------------------------------------
 result <- modelHD(
   D = NouraguesHD$D,
   H = NouraguesHD$H,
@@ -71,7 +71,7 @@ result <- modelHD(
 )
 kable(result)
 
-## ---- cache=CACHE--------------------------------------------------------
+## ---- cache=CACHE-------------------------------------------------------------
 HDmodel <- modelHD(
   D = NouraguesHD$D,
   H = NouraguesHD$H,
@@ -79,7 +79,7 @@ HDmodel <- modelHD(
   useWeight = TRUE
 )
 
-## ---- cache=CACHE--------------------------------------------------------
+## ---- cache=CACHE-------------------------------------------------------------
 HDmodelPerPlot <- modelHD(
   D = NouraguesHD$D, H = NouraguesHD$H, method = "weibull",
   useWeight = T, plot = NouraguesHD$plotId
@@ -87,40 +87,40 @@ HDmodelPerPlot <- modelHD(
 ResHD <- t(sapply(HDmodelPerPlot, function(x) c(coef(x$model), RSE = x$RSE)))
 kable(ResHD, row.names = T, digits = 3)
 
-## ---- cache=CACHE--------------------------------------------------------
+## ---- cache=CACHE-------------------------------------------------------------
 dataHlocal <- retrieveH(
   D = KarnatakaForestsub$D,
   model = HDmodel
 )
 
-## ---- cache=CACHE--------------------------------------------------------
+## ---- cache=CACHE-------------------------------------------------------------
 dataHfeld <- retrieveH(
   D = KarnatakaForestsub$D,
   region = "SEAsia"
 )
 
-## ---- eval=F, cache=CACHE------------------------------------------------
+## ---- eval=F, cache=CACHE-----------------------------------------------------
 #  dataHchave <- retrieveH(
 #    D = KarnatakaForestsub$D,
 #    coord = KarnatakaForestsub[, c("long", "lat")]
 #  )
 
-## ---- cache=CACHE--------------------------------------------------------
+## ---- cache=CACHE-------------------------------------------------------------
 KarnatakaForestsub$WD <- dataWD$meanWD
 KarnatakaForestsub$H <- dataHlocal$H
 KarnatakaForestsub$Hfeld <- dataHfeld$H
 
-## ----warning=F, cache=CACHE----------------------------------------------
+## ----warning=F, cache=CACHE---------------------------------------------------
 AGBtree <- computeAGB(
   D = KarnatakaForestsub$D,
   WD = KarnatakaForestsub$WD,
   H = KarnatakaForestsub$H
 )
 
-## ----warning=F, cache=CACHE----------------------------------------------
+## ----warning=F, cache=CACHE---------------------------------------------------
 AGBplot <- summaryByPlot(AGBtree, KarnatakaForestsub$plotId)
 
-## ----warning=F, eval=F, cache=CACHE--------------------------------------
+## ----warning=F, eval=F, cache=CACHE-------------------------------------------
 #  AGBplotChave <- summaryByPlot(
 #    computeAGB(
 #      D = KarnatakaForestsub$D, WD = KarnatakaForestsub$WD,
@@ -129,7 +129,7 @@ AGBplot <- summaryByPlot(AGBtree, KarnatakaForestsub$plotId)
 #    KarnatakaForestsub$plotId
 #  )
 
-## ----warning=F, cache=CACHE----------------------------------------------
+## ----warning=F, cache=CACHE---------------------------------------------------
 AGBplotFeld <- summaryByPlot(
   computeAGB(
     D = KarnatakaForestsub$D, WD = KarnatakaForestsub$WD,
@@ -138,18 +138,18 @@ AGBplotFeld <- summaryByPlot(
   plot = KarnatakaForestsub$plotId
 )
 
-## ---- cache=CACHE--------------------------------------------------------
+## ---- cache=CACHE-------------------------------------------------------------
 KarnatakaForestsub$sdWD <- dataWD$sdWD
 KarnatakaForestsub$HfeldRSE <- dataHfeld$RSE
 
-## ---- cache=CACHE--------------------------------------------------------
+## ---- cache=CACHE-------------------------------------------------------------
 resultMC <- AGBmonteCarlo(D = KarnatakaForestsub$D, WD = KarnatakaForestsub$WD, errWD = KarnatakaForestsub$sdWD, HDmodel = HDmodel, Dpropag = "chave2004")
 Res <- summaryByPlot(resultMC$AGB_simu, KarnatakaForestsub$plotId)
 Res <- Res[order(Res$AGB), ]
 plot(Res$AGB, pch = 20, xlab = "Plots", ylab = "AGB (Mg/ha)", ylim = c(0, max(Res$Cred_97.5)), las = 1, cex.lab = 1.3)
 segments(seq(nrow(Res)), Res$Cred_2.5, seq(nrow(Res)), Res$Cred_97.5, col = "red")
 
-## ---- eval=F, cache=CACHE------------------------------------------------
+## ---- eval=F, cache=CACHE-----------------------------------------------------
 #  resultMC <- AGBmonteCarlo(
 #    D = KarnatakaForestsub$D,
 #    WD = KarnatakaForestsub$WD,
@@ -164,7 +164,7 @@ segments(seq(nrow(Res)), Res$Cred_2.5, seq(nrow(Res)), Res$Cred_97.5, col = "red
 #  plot(Res$AGB, pch = 20, xlab = "Plots", ylab = "AGB (Mg/ha)", ylim = c(0, max(Res$Cred_97.5)), las = 1, cex.lab = 1.3)
 #  segments(seq(nrow(Res)), Res$Cred_2.5, seq(nrow(Res)), Res$Cred_97.5, col = "red")
 
-## ---- eval=F,cache=CACHE-------------------------------------------------
+## ---- eval=F,cache=CACHE------------------------------------------------------
 #  resultMC <- AGBmonteCarlo(
 #    D = KarnatakaForestsub$D,
 #    WD = KarnatakaForestsub$WD,
@@ -177,14 +177,14 @@ segments(seq(nrow(Res)), Res$Cred_2.5, seq(nrow(Res)), Res$Cred_97.5, col = "red
 #  plot(Res$AGB, pch = 20, xlab = "Plots", ylab = "AGB (Mg/ha)", ylim = c(0, max(Res$Cred_97.5)), las = 1, cex.lab = 1.3)
 #  segments(seq(nrow(Res)), Res$Cred_2.5, seq(nrow(Res)), Res$Cred_97.5, col = "red")
 
-## ---- cache=CACHE--------------------------------------------------------
+## ---- cache=CACHE-------------------------------------------------------------
 NouraguesHD$Hmix <- NouraguesHD$H
 NouraguesHD$RSEmix <- 0.5
 filt <- is.na(NouraguesHD$Hmix)
 NouraguesHD$Hmix[filt] <- retrieveH(NouraguesHD$D, model = HDmodel)$H[filt]
 NouraguesHD$RSEmix[filt] <- HDmodel$RSE
 
-## ----eval=F, cache=CACHE-------------------------------------------------
+## ----eval=F, cache=CACHE------------------------------------------------------
 #  wd <- getWoodDensity(NouraguesHD$genus, NouraguesHD$species)
 #  resultMC <- AGBmonteCarlo(
 #    D = NouraguesHD$D, WD = wd$meanWD, errWD = wd$sdWD,
