@@ -4,16 +4,18 @@
 \name{wdData}
 \alias{wdData}
 \title{The global wood density database}
-\format{A data frame with 16467 observations on the following 7 variables.
+\format{
+A data frame with 16467 observations on the following 7 variables.
 \itemize{
 \item \code{family}: a character vector indicating the family
 \item \code{genus}: a character vector indicating the genus
 \item \code{species}: a character vector indicating the species
-\item \code{wd}: a numeric vector of wood densities (g/cm-3)
+\item \code{wd}: a numeric vector of wood densities (g/cm^3)
 \item \code{region}: a character vector of regions (see \code{\link[=getWoodDensity]{getWoodDensity()}})
 \item \code{referenceNumber}: a numeric vector of reference numbers (bibliography)
 \item \code{regionId}: a character vector of region ids
-}}
+}
+}
 \source{
 Zanne et al. \emph{Global wood density database.} Dryad. Identifier: http://datadryad.org/handle/10255/dryad.235 (2009).
 }

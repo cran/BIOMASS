@@ -146,7 +146,7 @@ KarnatakaForestsub$HfeldRSE <- dataHfeld$RSE
 resultMC <- AGBmonteCarlo(D = KarnatakaForestsub$D, WD = KarnatakaForestsub$WD, errWD = KarnatakaForestsub$sdWD, HDmodel = HDmodel, Dpropag = "chave2004")
 Res <- summaryByPlot(resultMC$AGB_simu, KarnatakaForestsub$plotId)
 Res <- Res[order(Res$AGB), ]
-plot(Res$AGB, pch = 20, xlab = "Plots", ylab = "AGB (Mg/ha)", ylim = c(0, max(Res$Cred_97.5)), las = 1, cex.lab = 1.3)
+plot(Res$AGB, pch = 20, xlab = "Plots", ylab = "AGB", ylim = c(0, max(Res$Cred_97.5)), las = 1, cex.lab = 1.3)
 segments(seq(nrow(Res)), Res$Cred_2.5, seq(nrow(Res)), Res$Cred_97.5, col = "red")
 
 ## ---- eval=F, cache=CACHE-----------------------------------------------------
@@ -161,7 +161,7 @@ segments(seq(nrow(Res)), Res$Cred_2.5, seq(nrow(Res)), Res$Cred_97.5, col = "red
 #  
 #  Res <- summaryByPlot(resultMC$AGB_simu, KarnatakaForestsub$plotId)
 #  Res <- Res[order(Res$AGB), ]
-#  plot(Res$AGB, pch = 20, xlab = "Plots", ylab = "AGB (Mg/ha)", ylim = c(0, max(Res$Cred_97.5)), las = 1, cex.lab = 1.3)
+#  plot(Res$AGB, pch = 20, xlab = "Plots", ylab = "AGB", ylim = c(0, max(Res$Cred_97.5)), las = 1, cex.lab = 1.3)
 #  segments(seq(nrow(Res)), Res$Cred_2.5, seq(nrow(Res)), Res$Cred_97.5, col = "red")
 
 ## ---- eval=F,cache=CACHE------------------------------------------------------
@@ -174,7 +174,7 @@ segments(seq(nrow(Res)), Res$Cred_2.5, seq(nrow(Res)), Res$Cred_97.5, col = "red
 #  )
 #  Res <- summaryByPlot(resultMC$AGB_simu, KarnatakaForestsub$plotId)
 #  Res <- Res[order(Res$AGB), ]
-#  plot(Res$AGB, pch = 20, xlab = "Plots", ylab = "AGB (Mg/ha)", ylim = c(0, max(Res$Cred_97.5)), las = 1, cex.lab = 1.3)
+#  plot(Res$AGB, pch = 20, xlab = "Plots", ylab = "AGB", ylim = c(0, max(Res$Cred_97.5)), las = 1, cex.lab = 1.3)
 #  segments(seq(nrow(Res)), Res$Cred_2.5, seq(nrow(Res)), Res$Cred_97.5, col = "red")
 
 ## ---- cache=CACHE-------------------------------------------------------------

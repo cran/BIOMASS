@@ -4,8 +4,15 @@
 \alias{getWoodDensity}
 \title{Estimating wood density}
 \usage{
-getWoodDensity(genus, species, stand = NULL, family = NULL,
-  region = "World", addWoodDensityData = NULL, verbose = TRUE)
+getWoodDensity(
+  genus,
+  species,
+  stand = NULL,
+  family = NULL,
+  region = "World",
+  addWoodDensityData = NULL,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{genus}{Vector of genus names}
@@ -46,7 +53,7 @@ combined with the global wood density database. The dataframe should be organize
 in a dataframe with three (or four) columns: "genus","species","wd", the fourth
 column "family" is optional.}
 
-\item{verbose}{A logical, give some statistic whith the database}
+\item{verbose}{A logical, give some statistic with the database}
 }
 \value{
 Returns a dataframe containing the following information:
@@ -54,8 +61,8 @@ Returns a dataframe containing the following information:
 \item \code{family}: (if set) Family
 \item \code{genus}: Genus
 \item \code{species}: Species
-\item \code{meanWD}: Mean wood density
-\item \code{sdWD}: Standard deviation of the wood density that can be used in error propagation
+\item \code{meanWD} (g/cm^3): Mean wood density
+\item \code{sdWD} (g/cm^3): Standard deviation of the wood density that can be used in error propagation
 (see \link{sd_10} and \code{\link[=AGBmonteCarlo]{AGBmonteCarlo()}})
 \item \code{levelWD}: Level at which wood density has been calculated. Can be species, genus, family,
 dataset (mean of the entire dataset) or, if stand is set, the name of the stand (mean of the current stand)
