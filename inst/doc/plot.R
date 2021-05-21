@@ -8,28 +8,28 @@ require(knitr)
 
 ## -----------------------------------------------------------------------------
 trees <- read.csv(system.file("external", "NouraguesPlot.csv",
-  package = "BIOMASS", mustWork = T
+  package = "BIOMASS", mustWork = TRUE
 ))
 
 ## ----echo=FALSE---------------------------------------------------------------
-kable(head(trees), digits = 3, row.names = F, caption = "Head of the table trees")
+kable(head(trees), digits = 3, row.names = FALSE, caption = "Head of the table trees")
 
 ## ---- fig.cap="Plot the coordinate long lat"----------------------------------
 coord <- read.csv(system.file("external", "Coord.csv",
-  package = "BIOMASS", mustWork = T
+  package = "BIOMASS", mustWork = TRUE
 ))
 
 plot(coord[, c("Long", "Lat")], asp = 1)
 
 ## ----echo=FALSE---------------------------------------------------------------
-kable(head(coord), digits = 3, row.names = F, caption = "Head of the table coord")
+kable(head(coord), digits = 3, row.names = FALSE, caption = "Head of the table coord")
 
 ## ---- cache=FALSE-------------------------------------------------------------
 correct_plot <- correctCoordGPS(
   longlat = coord[, c("Long", "Lat")],
   coordRel = coord[, c("xRel", "yRel")],
-  rangeX = c(0, 100), rangeY = c(0, 100), drawPlot = T,
-  maxDist = 10, rmOutliers = T
+  rangeX = c(0, 100), rangeY = c(0, 100), drawPlot = TRUE,
+  maxDist = 10, rmOutliers = TRUE
 )
 
 str(correct_plot, max.level = 1)
@@ -39,7 +39,7 @@ coord_num <- numberCorner(
   projCoord = correct_plot$cornerCoords,
   plot = rep("NB1", 4),
   origin = c(F, F, F, T),
-  clockWise = T
+  clockWise = TRUE
 )
 
 
@@ -63,7 +63,7 @@ trees$subplot <- attributeTree(trees[, c("xRel", "yRel")], rep("NB1", nrow(trees
 ## -----------------------------------------------------------------------------
 trees$AGB <- computeAGB(trees$D, trees$WD, H = trees$H)
 
-AGB <- summaryByPlot(trees$AGB, trees$subplot, drawPlot = T, subplot = subplot)
+AGB <- summaryByPlot(trees$AGB, trees$subplot, drawPlot = TRUE, subplot = subplot)
 
 print(AGB)
 
@@ -76,21 +76,21 @@ TreeCoord <- attributeTreeCoord(
 )
 
 ## ----echo=FALSE---------------------------------------------------------------
-kable(head(TreeCoord), digits = 3, row.names = F, caption = "Head of the table TreeCoord")
+kable(head(TreeCoord), digits = 3, row.names = FALSE, caption = "Head of the table TreeCoord")
 
 ## -----------------------------------------------------------------------------
-#TreeCoord <- as.data.frame( proj4::project(TreeCoord, proj = correct_plot$codeUTM, inverse = T) )
+#TreeCoord <- as.data.frame( proj4::project(TreeCoord, proj = correct_plot$codeUTM, inverse = TRUE) )
 
 ## ----echo=FALSE---------------------------------------------------------------
-kable(head(TreeCoord), digits = 3, row.names = F, caption = "Head of the table TreeCoord")
+kable(head(TreeCoord), digits = 3, row.names = FALSE, caption = "Head of the table TreeCoord")
 
 ## -----------------------------------------------------------------------------
 coordAbs = data.frame(X = c(4.066923, 4.067865, 4.067842, 4.066905), Y = c(52.68883, 52.68877, 52.68793, 52.68783))
 
 ncoordAbs = numberCorner(projCoord = coordAbs, 
                                 plot = rep("NB1", 4), 
-                                origin = c(T, F, F, F), 
-                                clockWise = T)
+                                origin = c(TRUE, FALSE, FALSE, FALSE), 
+                                clockWise = TRUE)
 
 TreeCoord <- attributeTreeCoord(
   xy = trees[, c("xRel", "yRel")],
@@ -100,5 +100,5 @@ TreeCoord <- attributeTreeCoord(
 )
 
 ## ----echo=FALSE---------------------------------------------------------------
-kable(head(TreeCoord), digits = 3, row.names = F, caption = "Head of the table TreeCoord")
+kable(head(TreeCoord), digits = 3, row.names = FALSE, caption = "Head of the table TreeCoord")
 

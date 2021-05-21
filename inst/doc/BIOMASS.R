@@ -24,12 +24,12 @@ selecPlot <- KarnatakaForest$plotId %in% c("BSP2", "BSP12", "BSP14", "BSP26", "B
 KarnatakaForestsub <- droplevels(KarnatakaForest[selecPlot, ])
 
 ## ----eval=test, cache=CACHE---------------------------------------------------
-Taxo <- correctTaxo(genus = KarnatakaForestsub$genus, species = KarnatakaForestsub$species, useCache = T, verbose = F)
+Taxo <- correctTaxo(genus = KarnatakaForestsub$genus, species = KarnatakaForestsub$species, useCache = FALSE, verbose = FALSE)
 KarnatakaForestsub$genusCorr <- Taxo$genusCorrected
 KarnatakaForestsub$speciesCorr <- Taxo$speciesCorrected
 
 ## ----eval=test, cache=CACHE---------------------------------------------------
-APG <- getTaxonomy(KarnatakaForestsub$genusCorr, findOrder = T)
+APG <- getTaxonomy(KarnatakaForestsub$genusCorr, findOrder = TRUE)
 KarnatakaForestsub$familyAPG <- APG$family
 KarnatakaForestsub$orderAPG <- APG$order
 
@@ -82,10 +82,10 @@ HDmodel <- modelHD(
 ## ---- cache=CACHE-------------------------------------------------------------
 HDmodelPerPlot <- modelHD(
   D = NouraguesHD$D, H = NouraguesHD$H, method = "weibull",
-  useWeight = T, plot = NouraguesHD$plotId
+  useWeight = TRUE, plot = NouraguesHD$plotId
 )
 ResHD <- t(sapply(HDmodelPerPlot, function(x) c(coef(x$model), RSE = x$RSE)))
-kable(ResHD, row.names = T, digits = 3)
+kable(ResHD, row.names = TRUE, digits = 3)
 
 ## ---- cache=CACHE-------------------------------------------------------------
 dataHlocal <- retrieveH(

@@ -1,4 +1,5 @@
 #' @rdname HDmethods
+#' @return Result of a model (nlsM object)
 #' @importFrom minpack.lm nlsLM nls.lm.control
 #' @importFrom methods is
 

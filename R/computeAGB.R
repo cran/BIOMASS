@@ -12,6 +12,8 @@
 #' proxy (parameter E in Chave et al. 2014). Compulsory if tree heights `H` are not given.
 #' @param Dlim (optional) Minimum diameter (in cm) for which aboveground biomass should be calculated
 #' (all diameter below `Dlim` will have a 0 value in the output).
+#' @param useCache logical. Whether or not use a cache to avoid downloading multiple time the same files.
+#' Strongly recommended to reduce computing time (but FALSE by default due to CRAN policy).
 #'
 #' @details
 #' This function uses two different ways of computing the above-ground biomass of a tree:
@@ -22,7 +24,7 @@
 #' 2) If no tree height data is available, the AGB is computed thanks to the site coordinates with the following equation, slightly modified from Eq. 7 in Chave et al., 2014 (see Réjou-Méchain et al. 2017):
 #'  \deqn{AGB = exp(-2.024- 0.896*E + 0.920*log(WD) + 2.795*log(D) - 0.0461*(log(D)^2))} where `E` is a measure of environmental stress estimated from the site coordinates (`coord`).
 #'
-#' @return The function returns the AGB in Mg (or ton).
+#' @return The function returns the AGB in Mg (or ton) as a single value or a vector.
 #' @export
 #' @references
 #' Chave et al. (2014) _Improved allometric models to estimate the aboveground biomass of tropical trees_,
@@ -41,8 +43,8 @@
 #' # If you do not have height data and a single site
 #' lat <- 4.08
 #' long <- -52.68
-#' coord <- cbind(long, lat)
-#' \dontrun{
+#' coord <- c(long, lat)
+#' \donttest{
 #' AGB <- computeAGB(D, WD, coord = coord)
 #' }
 #'
@@ -50,13 +52,13 @@
 #' lat <- c(rep(4.08, 30), rep(3.98, 30), rep(4.12, 30))
 #' long <- c(rep(-52.68, 30), rep(-53.12, 30), rep(-53.29, 30))
 #' coord <- cbind(long, lat)
-#' \dontrun{
+#' \donttest{
 #' AGB <- computeAGB(D, WD, coord = coord)
 #' }
 #'
 #' @keywords AGB above-ground biomass forest carbon allometry
 
-computeAGB <- function(D, WD, H = NULL, coord = NULL, Dlim = NULL) {
+computeAGB <- function(D, WD, H = NULL, coord = NULL, Dlim = NULL, useCache=FALSE) {
 
   # Parameters verification -------------------------------------------------
 
@@ -102,7 +104,7 @@ computeAGB <- function(D, WD, H = NULL, coord = NULL, Dlim = NULL) {
       coord <- as.matrix(t(coord))
     }
 
-    E <- computeE(coord) # environmental index in Chave et al. 2014
+    E <- computeE(coord, useCache) # environmental index in Chave et al. 2014
 
     # Modified Eq 7 from Chave et al. 2014 Global change biology
     AGB <- exp(-2.023977 - 0.89563505 * E + 0.92023559 * log(WD) + 2.79495823 * log(D) - 0.04606298 * (log(D)^2)) / 1000
