@@ -1,3 +1,10 @@
+* version 2.1.6
+- Fit the CRAN policies regarding the cache management by defaulting location to
+R session temp folder (issue #30)
+  - Use function createCache to activate a permanent cache
+  - clearCache function allows to clear or remove permanent cache folder
+- Avoid all tests based on downloading rasters (E and bioclim parameters)
+
 * version 2.1.5
 - updated TNRS API request code in correctTaxo (issue #25)
 
