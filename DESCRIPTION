@@ -2,8 +2,8 @@ Package: BIOMASS
 Type: Package
 Title: Estimating Aboveground Biomass and Its Uncertainty in Tropical
         Forests
-Version: 2.1.6
-Date: 2021-06-22
+Version: 2.1.7
+Date: 2021-12-09
 Authors@R: c(
 	person("Maxime", "Réjou-Méchain", email = "maxime.rejou@gmail.com", role = c("aut", "cre", "dtc")),
 	person("Arthur", "Pere", email = "arthur.pere@cirad.fr", role = c("aut")),
@@ -33,7 +33,7 @@ VignetteBuilder: knitr
 Suggests: knitr, rmarkdown, prettydoc, testthat, httr, curl, sf
 RoxygenNote: 7.1.1
 NeedsCompilation: no
-Packaged: 2021-06-22 11:45:36 UTC; rejou
+Packaged: 2021-12-13 10:47:05 UTC; rejou
 Author: Maxime Réjou-Méchain [aut, cre, dtc],
   Arthur Pere [aut],
   Guillaume Cornu [aut] (<https://orcid.org/0000-0002-7523-5176>),
@@ -45,4 +45,4 @@ Author: Maxime Réjou-Méchain [aut, cre, dtc],
   Philippe Verley [ctb]
 Maintainer: Maxime Réjou-Méchain <maxime.rejou@gmail.com>
 Repository: CRAN
-Date/Publication: 2021-06-25 09:50:07 UTC
+Date/Publication: 2021-12-13 11:30:05 UTC
