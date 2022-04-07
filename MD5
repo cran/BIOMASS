@@ -1,4 +1,4 @@
-5a5c215d98958eba343c45a834859606 *DESCRIPTION
+b31af250d39b49789b4a943e92b8825a *DESCRIPTION
 0c89eae11c867846be07f84704f40edf *NAMESPACE
 7e4e466ad5bb8f77e7875d47b4860bf7 *NEWS
 b4fe72647142df2e37c57ed78e9d903c *R/AGBmonteCarlo.R
@@ -11,7 +11,7 @@ c79170a2a6b56405a276b8fd098c5888 *R/attributeTree.R
 4bdcf55b77d547dec3a8f3837113f1e7 *R/correctCoordGPS.R
 368423d65f79b357cb17dabe76950a87 *R/correctTaxo.R
 370f3bd623cd68e3eb75aeb3f97e7263 *R/cutPlot.R
-fd9c39a16caeffbb99f05d52b5cd150b *R/data_documentation.R
+fc7281d159d2996b22195817ee24a040 *R/data_documentation.R
 af35113c085b38b4680d777514d5372c *R/getBioclimParam.R
 f0bd240aaba223b8e3917aa8ecd9ece7 *R/getTaxonomy.R
 52dc82202e62eba6b41c65060818ad46 *R/getWoodDensity.R
@@ -26,7 +26,7 @@ e13df4ae83b4d55c88fe3ef394ee4a2c *R/predictHeight.R
 019dc28949824b2fed68804fa4e5303a *R/retrieveH.R
 0e0df048446a70c54c6d12edfdd3d850 *R/summaryByPlot.R
 7aa24f9ee20f8a05e99cbc8a9391910e *R/weibullFunction.R
-cbdfe96b44a3b06050e70e21a12004c8 *README.md
+d6b54dfa3d4ec3d060ddbe19e28e4109 *README.md
 82e8637a9b34558f51986b7ac477815d *build/vignette.rds
 d1b43bfab9c5328f0b8531c44f700a06 *data/KarnatakaForest.rda
 608f50e196560ee0ccf4e1e42d6701e3 *data/NouraguesHD.rda
@@ -40,17 +40,17 @@ d7c8c86a88c4d0495e79cb6de66480c6 *data/param_4.rda
 aca6b0f9e61574ee0443a8c181bd0a91 *inst/CITATION
 d7c85f68fe5c9fad4864f04a4a227177 *inst/doc/BIOMASS.R
 b0aa8ed0a32ef527a6e3b5bf096ddada *inst/doc/BIOMASS.Rmd
-e04d0c90ee3f1ddf6d37041e3bd1f39c *inst/doc/BIOMASS.html
+dea48b195ba3b3152e6a9f984d3eb2e5 *inst/doc/BIOMASS.html
 29989f9b5d99c25f401d92bfcb8cb539 *inst/doc/plot.R
 c4309e36a31b10e4117b7dfc8dba84a3 *inst/doc/plot.Rmd
-52a1dd4d630d699c6e03dc0f043407c1 *inst/doc/plot.html
+f4089a17c62b8139fea6a348a3217170 *inst/doc/plot.html
 993f3ea6350f98cdfcf81f39499b9ebc *inst/external/Coord.csv
 a128bed0e6250df51c94484260ab625a *inst/external/NouraguesPlot.csv
 9cace57c257e65206e3e521424683353 *inst/external/feldRegion.grd
 d79ac19fd39498900f676ebd89991fb0 *inst/external/feldRegion.gri
 4873632441e33faa5be7e6dd74909952 *man/AGBmonteCarlo.Rd
-16219bfb73f41905f319b370693d2418 *man/BIOMASS-package.Rd
-cd4b491ffc306209dafd9a4a406f0423 *man/HDmethods.Rd
+a916477f996e2fae06be1985909899e6 *man/BIOMASS-package.Rd
+5845fc906d47181a809553928c08c059 *man/HDmethods.Rd
 7b9eb54b90138bec843e701e153f0288 *man/KarnatakaForest.Rd
 0db0c6a9d1c025a60232a3e0271505a8 *man/NouraguesHD.Rd
 2f9343d624d01585382c5b1c15d54526 *man/apgFamilies.Rd
