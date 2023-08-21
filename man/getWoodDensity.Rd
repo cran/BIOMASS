@@ -89,19 +89,24 @@ appropriate taxonomic level using the \link{sd_10} dataset.
 data(KarnatakaForest)
 
 # Compute the Wood Density up to the genus level and give the mean wood density of the dataset
+\donttest{
 WD <- getWoodDensity(
   genus = KarnatakaForest$genus,
   species = KarnatakaForest$species
 )
+}
 
 # Compute the Wood Density up to the genus level and then give the mean wood density per stand
+\donttest{
 WD <- getWoodDensity(
   genus = KarnatakaForest$genus,
   species = KarnatakaForest$species,
   stand = KarnatakaForest$plotId
 )
+}
 
 # Compute the Wood Density up to the family level and then give the mean wood density per stand
+\donttest{
 WD <- getWoodDensity(
   family = KarnatakaForest$family,
   genus = KarnatakaForest$genus,
@@ -109,6 +114,7 @@ WD <- getWoodDensity(
   stand = KarnatakaForest$plotId
 )
 str(WD)
+}
 }
 \references{
 Chave, J., et al. \emph{Towards a worldwide wood economics spectrum}. Ecology letters 12.4 (2009): 351-366.

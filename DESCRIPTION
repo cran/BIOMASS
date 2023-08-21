@@ -2,12 +2,13 @@ Package: BIOMASS
 Type: Package
 Title: Estimating Aboveground Biomass and Its Uncertainty in Tropical
         Forests
-Version: 2.1.8
-Date: 2022-04-04
+Version: 2.1.9
+Date: 2023-08-17
 Authors@R: c(
-	person("Maxime", "Réjou-Méchain", email = "maxime.rejou@gmail.com", role = c("aut", "cre", "dtc")),
-	person("Arthur", "Pere", email = "arthur.pere@cirad.fr", role = c("aut")),
+	person("Maxime", "Réjou-Méchain", email = "maxime.rejou@gmail.com", role = c("aut", "dtc")),
 	person("Guillaume","Cornu", email = "gcornu@cirad.fr", role = c("aut"), comment = c(ORCID="0000-0002-7523-5176")),	
+	person("Dominique", "Lamonica", email = "dominique.lamonica@ird.fr", role = c("aut","cre")),
+	person("Arthur", "Pere", role = c("aut")),
 	person("Ariane", "Tanguy", role = c("aut")),
 	person("Camille", "Piponiot", role = c("aut")),
 	person("Jerome", "Chave", email = "jerome.chave@univ-tlse3.fr", role = c("dtc")),
@@ -20,7 +21,7 @@ Description: Contains functions to estimate aboveground biomass/carbon and its u
 	(3) construct height-diameter models, (4) manage tree and plot coordinates, 
 	(5) estimate the aboveground biomass/carbon at the stand level with associated uncertainty. 
 	To cite 'BIOMASS', please use citation("BIOMASS"). 
-	See more in the article of Réjou-Méchain et al. (2017) <https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.12753>.
+	See more in the article of Réjou-Méchain et al. (2017) <doi:10.1111/2041-210X.12753>.
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
@@ -31,18 +32,19 @@ Imports: minpack.lm, raster, jsonlite, methods, proj4, graphics, stats,
         utils, data.table (>= 1.9.8), rappdirs, sp
 VignetteBuilder: knitr
 Suggests: knitr, rmarkdown, prettydoc, testthat, httr, curl, sf
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 NeedsCompilation: no
-Packaged: 2022-04-07 10:46:01 UTC; rejou
-Author: Maxime Réjou-Méchain [aut, cre, dtc],
-  Arthur Pere [aut],
+Packaged: 2023-08-21 12:13:54 UTC; lamonica
+Author: Maxime Réjou-Méchain [aut, dtc],
   Guillaume Cornu [aut] (<https://orcid.org/0000-0002-7523-5176>),
+  Dominique Lamonica [aut, cre],
+  Arthur Pere [aut],
   Ariane Tanguy [aut],
   Camille Piponiot [aut],
   Jerome Chave [dtc],
   Bruno Hérault [aut],
   Ted Feldpausch [dtc],
   Philippe Verley [ctb]
-Maintainer: Maxime Réjou-Méchain <maxime.rejou@gmail.com>
+Maintainer: Dominique Lamonica <dominique.lamonica@ird.fr>
 Repository: CRAN
-Date/Publication: 2022-04-07 13:42:38 UTC
+Date/Publication: 2023-08-21 14:20:14 UTC

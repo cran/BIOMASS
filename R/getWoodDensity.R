@@ -83,19 +83,24 @@ if (getRversion() >= "2.15.1") {
 #' data(KarnatakaForest)
 #'
 #' # Compute the Wood Density up to the genus level and give the mean wood density of the dataset
+#' \donttest{
 #' WD <- getWoodDensity(
 #'   genus = KarnatakaForest$genus,
 #'   species = KarnatakaForest$species
 #' )
-#'
+#' }
+#' 
 #' # Compute the Wood Density up to the genus level and then give the mean wood density per stand
+#' \donttest{
 #' WD <- getWoodDensity(
 #'   genus = KarnatakaForest$genus,
 #'   species = KarnatakaForest$species,
 #'   stand = KarnatakaForest$plotId
 #' )
-#'
+#' }
+#' 
 #' # Compute the Wood Density up to the family level and then give the mean wood density per stand
+#' \donttest{
 #' WD <- getWoodDensity(
 #'   family = KarnatakaForest$family,
 #'   genus = KarnatakaForest$genus,
@@ -103,6 +108,7 @@ if (getRversion() >= "2.15.1") {
 #'   stand = KarnatakaForest$plotId
 #' )
 #' str(WD)
+#' }
 #' @seealso [wdData], [sd_10]
 #' @keywords Wood density
 #' @importFrom data.table data.table := setDF setDT setkey copy chmatch %chin%
