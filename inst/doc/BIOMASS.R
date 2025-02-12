@@ -5,31 +5,37 @@ CACHE <- TRUE
 require(knitr)
 require(BIOMASS)
 
-## ---- eval=F------------------------------------------------------------------
+## ----eval=F-------------------------------------------------------------------
 #  install.packages("BIOMASS")
 
-## ---- eval=F------------------------------------------------------------------
+## ----eval=F-------------------------------------------------------------------
 #  require(BIOMASS)
 #  require(knitr) # To build tables in this document
 
-## ---- cache=CACHE-------------------------------------------------------------
+## ----cache=CACHE--------------------------------------------------------------
 data(KarnatakaForest)
 str(KarnatakaForest)
 #
 data(NouraguesHD)
 str(NouraguesHD)
 
-## ---- cache=CACHE-------------------------------------------------------------
+## ----cache=CACHE--------------------------------------------------------------
 selecPlot <- KarnatakaForest$plotId %in% c("BSP2", "BSP12", "BSP14", "BSP26", "BSP28", "BSP30", "BSP34", "BSP44", "BSP63", "BSP65")
 KarnatakaForestsub <- droplevels(KarnatakaForest[selecPlot, ])
 
 ## ----eval=test, cache=CACHE---------------------------------------------------
-Taxo <- correctTaxo(genus = KarnatakaForestsub$genus, species = KarnatakaForestsub$species, useCache = FALSE, verbose = FALSE)
+#uncomment the following line to check & retrieve taxonomy using correctTaxo function :
+#Taxo <- correctTaxo(genus = KarnatakaForestsub$genus, species = KarnatakaForestsub$species, useCache = FALSE, verbose = FALSE)
+#comment the following line loading the corrected version :
+data(Taxo)
 KarnatakaForestsub$genusCorr <- Taxo$genusCorrected
 KarnatakaForestsub$speciesCorr <- Taxo$speciesCorrected
 
 ## ----eval=test, cache=CACHE---------------------------------------------------
-APG <- getTaxonomy(KarnatakaForestsub$genusCorr, findOrder = TRUE)
+#uncomment the following line to retrieve APG III families and orders from genus names using getTaxonomy function :
+#APG <- getTaxonomy(KarnatakaForestsub$genusCorr, findOrder = TRUE)
+#comment the following line loading the corrected version :
+data(APG)
 KarnatakaForestsub$familyAPG <- APG$family
 KarnatakaForestsub$orderAPG <- APG$order
 
@@ -71,7 +77,7 @@ result <- modelHD(
 )
 kable(result)
 
-## ---- cache=CACHE-------------------------------------------------------------
+## ----cache=CACHE--------------------------------------------------------------
 HDmodel <- modelHD(
   D = NouraguesHD$D,
   H = NouraguesHD$H,
@@ -79,7 +85,7 @@ HDmodel <- modelHD(
   useWeight = TRUE
 )
 
-## ---- cache=CACHE-------------------------------------------------------------
+## ----cache=CACHE--------------------------------------------------------------
 HDmodelPerPlot <- modelHD(
   D = NouraguesHD$D, H = NouraguesHD$H, method = "weibull",
   useWeight = TRUE, plot = NouraguesHD$plotId
@@ -87,25 +93,25 @@ HDmodelPerPlot <- modelHD(
 ResHD <- t(sapply(HDmodelPerPlot, function(x) c(coef(x$model), RSE = x$RSE)))
 kable(ResHD, row.names = TRUE, digits = 3)
 
-## ---- cache=CACHE-------------------------------------------------------------
+## ----cache=CACHE--------------------------------------------------------------
 dataHlocal <- retrieveH(
   D = KarnatakaForestsub$D,
   model = HDmodel
 )
 
-## ---- cache=CACHE-------------------------------------------------------------
+## ----cache=CACHE--------------------------------------------------------------
 dataHfeld <- retrieveH(
   D = KarnatakaForestsub$D,
   region = "SEAsia"
 )
 
-## ---- eval=F, cache=CACHE-----------------------------------------------------
+## ----eval=F, cache=CACHE------------------------------------------------------
 #  dataHchave <- retrieveH(
 #    D = KarnatakaForestsub$D,
 #    coord = KarnatakaForestsub[, c("long", "lat")]
 #  )
 
-## ---- cache=CACHE-------------------------------------------------------------
+## ----cache=CACHE--------------------------------------------------------------
 KarnatakaForestsub$WD <- dataWD$meanWD
 KarnatakaForestsub$H <- dataHlocal$H
 KarnatakaForestsub$Hfeld <- dataHfeld$H
@@ -138,18 +144,18 @@ AGBplotFeld <- summaryByPlot(
   plot = KarnatakaForestsub$plotId
 )
 
-## ---- cache=CACHE-------------------------------------------------------------
+## ----cache=CACHE--------------------------------------------------------------
 KarnatakaForestsub$sdWD <- dataWD$sdWD
 KarnatakaForestsub$HfeldRSE <- dataHfeld$RSE
 
-## ---- cache=CACHE-------------------------------------------------------------
+## ----cache=CACHE--------------------------------------------------------------
 resultMC <- AGBmonteCarlo(D = KarnatakaForestsub$D, WD = KarnatakaForestsub$WD, errWD = KarnatakaForestsub$sdWD, HDmodel = HDmodel, Dpropag = "chave2004")
 Res <- summaryByPlot(resultMC$AGB_simu, KarnatakaForestsub$plotId)
 Res <- Res[order(Res$AGB), ]
 plot(Res$AGB, pch = 20, xlab = "Plots", ylab = "AGB", ylim = c(0, max(Res$Cred_97.5)), las = 1, cex.lab = 1.3)
 segments(seq(nrow(Res)), Res$Cred_2.5, seq(nrow(Res)), Res$Cred_97.5, col = "red")
 
-## ---- eval=F, cache=CACHE-----------------------------------------------------
+## ----eval=F, cache=CACHE------------------------------------------------------
 #  resultMC <- AGBmonteCarlo(
 #    D = KarnatakaForestsub$D,
 #    WD = KarnatakaForestsub$WD,
@@ -164,7 +170,7 @@ segments(seq(nrow(Res)), Res$Cred_2.5, seq(nrow(Res)), Res$Cred_97.5, col = "red
 #  plot(Res$AGB, pch = 20, xlab = "Plots", ylab = "AGB", ylim = c(0, max(Res$Cred_97.5)), las = 1, cex.lab = 1.3)
 #  segments(seq(nrow(Res)), Res$Cred_2.5, seq(nrow(Res)), Res$Cred_97.5, col = "red")
 
-## ---- eval=F,cache=CACHE------------------------------------------------------
+## ----eval=F,cache=CACHE-------------------------------------------------------
 #  resultMC <- AGBmonteCarlo(
 #    D = KarnatakaForestsub$D,
 #    WD = KarnatakaForestsub$WD,
@@ -177,7 +183,7 @@ segments(seq(nrow(Res)), Res$Cred_2.5, seq(nrow(Res)), Res$Cred_97.5, col = "red
 #  plot(Res$AGB, pch = 20, xlab = "Plots", ylab = "AGB", ylim = c(0, max(Res$Cred_97.5)), las = 1, cex.lab = 1.3)
 #  segments(seq(nrow(Res)), Res$Cred_2.5, seq(nrow(Res)), Res$Cred_97.5, col = "red")
 
-## ---- cache=CACHE-------------------------------------------------------------
+## ----cache=CACHE--------------------------------------------------------------
 NouraguesHD$Hmix <- NouraguesHD$H
 NouraguesHD$RSEmix <- 0.5
 filt <- is.na(NouraguesHD$Hmix)

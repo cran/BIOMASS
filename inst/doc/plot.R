@@ -14,7 +14,7 @@ trees <- read.csv(system.file("external", "NouraguesPlot.csv",
 ## ----echo=FALSE---------------------------------------------------------------
 kable(head(trees), digits = 3, row.names = FALSE, caption = "Head of the table trees")
 
-## ---- fig.cap="Plot the coordinate long lat"----------------------------------
+## ----fig.cap="Plot the coordinate long lat"-----------------------------------
 coord <- read.csv(system.file("external", "Coord.csv",
   package = "BIOMASS", mustWork = TRUE
 ))
@@ -24,7 +24,7 @@ plot(coord[, c("Long", "Lat")], asp = 1)
 ## ----echo=FALSE---------------------------------------------------------------
 kable(head(coord), digits = 3, row.names = FALSE, caption = "Head of the table coord")
 
-## ---- cache=FALSE-------------------------------------------------------------
+## ----cache=FALSE--------------------------------------------------------------
 correct_plot <- correctCoordGPS(
   longlat = coord[, c("Long", "Lat")],
   coordRel = coord[, c("xRel", "yRel")],
