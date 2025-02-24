@@ -1,11 +1,4 @@
-if (getRversion() >= "2.15.1") {
-  utils::globalVariables(c(
-    "H"
-  ))
-}
-
-
-#' Predicting tree height
+#' Tree height predictions
 #'
 #' The function predicts height from diameter based on a fitted model.
 #'
@@ -25,7 +18,7 @@ if (getRversion() >= "2.15.1") {
 #' @author Maxime REJOU-MECHAIN, Ariane TANGUY, Arthur PERE
 #' @seealso [minpack.lm::nlsLM()]
 #'
-#'
+#' @export
 #' @importFrom data.table data.table
 #' @keywords Internal
 predictHeight <- function(D, model, err = FALSE, plot = NULL) {

@@ -4,45 +4,46 @@ if (getRversion() >= "2.15.1") {
   ))
 }
 
-#' Divides a plot in subplots
+#' Divides one or more plots into subplots
 #'
-#' This function divides a plot in subplots (with dimX and dimY) and gives the
-#' coordinates of the grid in return.
-#' This function uses a procrustes analysis to fit the rectangle you gave to the plot you have.
+#' This function divides a plot (or several plots) in subplots and returns the coordinates of the grid.
+#' These coordinates are calculated by a bilinear interpolation with the projected corner coordinates as references.  
 #'
-#' @param projCoord A data frame with the projected coordinates with X and Y on the first and second column respectively
-#' @param plot Vector with the code of the plot
-#' @param corner Vector with the corner numbered from 1 to 4 for each plot, the numbered must be counted clockwise
-#' (see the result of the [numberCorner()])
-#' @param gridsize The size of the grid
-#' @param dimX A vector of the real size for the X axis for the plot (can be given one value it will be replicate for each plot)
-#' @param dimY A vector of the real size for the Y axis for the plot (can be given one value it will be replicate for each plot)
+#' @param projCoord A data frame containing the projected coordinates of plot corners, with X and Y on the first and second column respectively
+#' @param plot A vector indicating the plot codes
+#' @param cornerNum A vector with corners numbered from 1 to 4 for each plot, numbering must be in clockwise direction
+#' @param gridsize The size of the subplots
+#' @param dimX A vector indicating the size of the plot on the X axis, in meters and in the relative coordinates system (if a single value is supplied, it will be replicated for all plots)
+#' @param dimY A vector indicating the size of the plot on the Y axis, in meters and in the relative coordinates system (if a single value is supplied, it will be replicated for all plots)
 #'
-#' @return This function return a data frame with :
-#'   - `plot`:  The code of the plot you use
-#'   - `subplot`:  The code of the subplot automatically generated
-#'   - `XRel`:  The relative coordinate for the axis X (following the corner 1->2) for the plot
-#'   - `YRel`:  The relative coordinate for the axis Y (following the corner 1->4) for the plot
-#'   - `XAbs`:  The absolute coordinate (projected) for the axis X (following the corner 1->2)
-#'   - `YAbs`:  The absolute coordinate (projected) for the axis Y (following the corner 1->4)
+#' @return Returns a data-frame containing as many rows as there are corners corresponding to the subplots, and the following columns :
+#'   - `plot`: The plot code
+#'   - `subplot`: The automatically generated subplot code
+#'   - `XRel`:  The relative coordinates on the X axis (defined by corners 1->4)
+#'   - `YRel`:  The relative coordinates on the Y axis (defined by corners 1->2)
+#'   - `XAbs`:  The absolute (projected) X coordinates  
+#'   - `YAbs`:  The absolute (projected) Y coordinates
 #'
 #' @export
 #' @author Arthur PERE
-#' @importFrom data.table data.table :=
+#' @importFrom data.table data.table := setnames
 #' @examples
 #'
 #' coord <- data.frame(X = c(0, 200, 0, 200), Y = c(0, 0, 200, 200)) + 5000
-#' corner <- c(1, 2, 4, 3)
+#' cornerNum <- c(1, 2, 4, 3)
 #' plot <- rep("plot1", 4)
 #'
-#' cut <- cutPlot(coord, plot, corner, gridsize = 100, dimX = 200, dimY = 200)
+#' cut <- cutPlot(coord, plot, cornerNum, gridsize = 100, dimX = 200, dimY = 200)
 #'
 #' # plot the result
 #' plot(coord, main = "example", xlim = c(4900, 5300), ylim = c(4900, 5300), asp = 1)
-#' text(coord, labels = corner, pos = 1)
+#' text(coord, labels = cornerNum, pos = 1)
 #' points(cut$XAbs, cut$YAbs, pch = "+")
 #' legend("bottomright", legend = c("orignal", "cut"), pch = c("o", "+"))
-cutPlot <- function(projCoord, plot, corner, gridsize = 100, dimX = 200, dimY = 200) {
+#' 
+cutPlot <- function(projCoord, plot, cornerNum, gridsize = 100, dimX = 200, dimY = 200) {
+  
+  .Deprecated(msg = "'cutPlot()' has been replaced by `divide_plot()` and will be removed in the next version.\nPlease see the vignette `Spatialized trees and forest stand metrics with BIOMASS`")
 
   # parameter verification --------------------------------------------------
   if (!is.data.frame(projCoord)) {
@@ -52,8 +53,8 @@ cutPlot <- function(projCoord, plot, corner, gridsize = 100, dimX = 200, dimY = 
   if (nrow(projCoord) != length(plot)) {
     stop("Length of plot and the number of row of your UTMcoord data frame are different")
   }
-  if (nrow(projCoord) != length(corner)) {
-    stop("Length of corner and the number of row of your UTMcoord data frame are different")
+  if (nrow(projCoord) != length(cornerNum)) {
+    stop("Length of cornerNum and the number of row of your UTMcoord data frame are different")
   }
   if (length(gridsize) != 1 || !is.numeric(gridsize)) {
     stop("Gridsize must contain 1 numeric value")
@@ -69,58 +70,59 @@ cutPlot <- function(projCoord, plot, corner, gridsize = 100, dimX = 200, dimY = 
   }
 
 
-  # function ----------------------------------------------------------------
+  # Function ----------------------------------------------------------------
 
-
-
-  Coord <- data.table(plot = plot, X = projCoord[, 1], Y = projCoord[, 2], corner = corner)
-  Coord <- Coord[order(corner), .SD, by = plot]
+  cornerCoord <- data.table(plot = plot, X = projCoord[, 1], Y = projCoord[, 2], cornerNum = cornerNum)
+  setnames(cornerCoord, colnames(cornerCoord), c("plot","X","Y","cornerNum")) #in case the user gives a data.table which preserved column
+  cornerCoord <- cornerCoord[order(cornerNum), .SD, by = plot]
   dimRel <- data.table(plot = unique(plot), dimX = dimX, dimY = dimY)
 
-
-  # Do the grid in the plot and calcul the coordinate absolute of the points of the grid
-  grid <- function(data, gridsize) {
-    a <- as.matrix(data[, .(X, Y)])
-
-    # Do the matrix for the procrust problem
-    b <- matrix(0, nrow = 4, ncol = 2)
-    b[2:3, 1] <- unique(data[, dimX])
-    b[3:4, 2] <- unique(data[, dimY])
-
-    res <- procrust(a, b)
-
-    # The grid matrix
-    c <- as.matrix(expand.grid(
-      X = seq(0, max(b[, 1]), by = gridsize),
-      Y = seq(0, max(b[, 2]), by = gridsize)
+  # Grids the plot in the relative coordinates system and calculates the absolute coordinates of the grid points.
+  gridFunction <- function(data, gridsize) {
+    
+    # Absolute coordinates matrix of the corners
+    absCoordMat <- as.matrix(data[, .(X, Y)])
+    
+    # Relative coordinates matrix of the corners
+    plotDimX <- as.numeric(unique(data[,"dimX"]))
+    plotDimY <- as.numeric(unique(data[,"dimY"]))
+    relCoordMat <- matrix(
+      c(0,0,
+        0,plotDimY,
+        plotDimX,plotDimY,
+        plotDimX,0) ,
+      byrow = T, ncol=2)
+    
+    # Grid matrix for the subplots
+    gridMat <- as.matrix(expand.grid(
+      X = seq(0, max(relCoordMat[, 1]), by = gridsize),
+      Y = seq(0, max(relCoordMat[, 2]), by = gridsize)
     ))
+    
+    # Transformation of relative grid coordinates into absolute coordinates
+    absCoord <- bilinear_interpolation(coord = gridMat , from_corner_coord = relCoordMat , to_corner_coord = absCoordMat )
 
-    # in absolute coordinate
-    coordAbs <- c %*% res$rotation
-    coordAbs <- sweep(coordAbs, 2, res$translation, FUN = "+")
-
-    return(data.table(XRel = c[, 1], YRel = c[, 2], XAbs = coordAbs[, 1], YAbs = coordAbs[, 2]))
+    return(data.table(XRel = gridMat[, 1], YRel = gridMat[, 2], XAbs=absCoord[, 1], YAbs=absCoord[, 2]))
   }
 
-  Coord <- Coord[dimRel, on = "plot"][, grid(.SD, gridsize), by = plot]
+  # Apply gridFunction to all plots
+  cornerCoord <- cornerCoord[dimRel, on = "plot"][, gridFunction(.SD, gridsize), by = plot]
 
-  cornerCoordinate <- function(data) {
-    rbindlist(apply(data[XRel < max(XRel) & YRel < max(YRel), -1], 1, function(x) {
+  # Number the corners in clockwise direction
+  numberingCorner <- function(data) {
+    rbindlist(apply(data[XRel < max(XRel) & YRel < max(YRel), -"plot"], 1, function(x) {
       X <- x["XRel"]
       Y <- x["YRel"]
 
       data[
-        (XRel == X & YRel == Y) |
-          (XRel == X + gridsize & YRel == Y) |
-          (XRel == X + gridsize & YRel == Y + gridsize) |
-          (XRel == X & YRel == Y + gridsize),
-        .(subplot = paste(plot, X / gridsize, Y / gridsize, sep = "_"), XRel, YRel, XAbs, YAbs)
-      ][c(1, 2, 4, 3), corner := seq(4)]
+        (XRel == X & YRel == Y) | (XRel == X + gridsize & YRel == Y) | (XRel == X + gridsize & YRel == Y + gridsize) | (XRel == X & YRel == Y + gridsize),
+        .(subplot = paste(plot, X / gridsize, Y / gridsize, sep = "_"),
+          XRel, YRel, XAbs, YAbs)][, cornerNum := c(1,4,2,3)] #Clockwise direction, for Counter-clockwise [c(1,2,4,3)]
     }))
   }
 
-  Coord <- Coord[, cornerCoordinate(.SD), by = plot, .SDcols = colnames(Coord)]
+  cornerCoord <- cornerCoord[, numberingCorner(.SD), by = plot, .SDcols = colnames(cornerCoord)]
 
-
-  return(as.data.frame(Coord))
+  return(as.data.frame(cornerCoord))
 }
+

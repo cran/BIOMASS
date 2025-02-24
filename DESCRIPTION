@@ -2,19 +2,20 @@ Package: BIOMASS
 Type: Package
 Title: Estimating Aboveground Biomass and Its Uncertainty in Tropical
         Forests
-Version: 2.1.12
-Date: 2025-01-21
+Version: 2.2.3
+Date: 2025-02-20
 Authors@R: c(
 	person("Maxime", "Réjou-Méchain", email = "maxime.rejou@gmail.com", role = c("aut", "dtc")),
 	person("Guillaume","Cornu", email = "gcornu@cirad.fr", role = c("aut"), comment = c(ORCID="0000-0002-7523-5176")),	
 	person("Dominique", "Lamonica", email = "dominique.lamonica@ird.fr", role = c("aut","cre")),
+	person("Arthur", "Bailly", email = "arthur.bailly@ird.fr ", role = c("aut")),
 	person("Arthur", "Pere", role = c("aut")),
 	person("Ariane", "Tanguy", role = c("aut")),
-	person("Camille", "Piponiot", role = c("aut")),
 	person("Jerome", "Chave", email = "jerome.chave@univ-tlse3.fr", role = c("dtc")),
-	person("Bruno", "Hérault", email = "bruno.herault@cirad.fr", role = c("aut")),
 	person("Ted", "Feldpausch", email = "T.R.Feldpausch@exeter.ac.uk", role = c("dtc")),
-	person("Philippe", "Verley", email = "philippe.verley@ird.fr ", role = c("ctb"))
+	person("Philippe", "Verley", email = "philippe.verley@ird.fr ", role = c("ctb")),
+	person("Camille", "Piponiot", role = c("aut")),
+	person("Bruno", "Hérault", email = "bruno.herault@cirad.fr", role = c("aut"))
   )
 Description: Contains functions to estimate aboveground biomass/carbon and its uncertainty in tropical forests. 
 	These functions allow to (1) retrieve and to correct taxonomy, (2) estimate wood density and its uncertainty, 
@@ -26,25 +27,28 @@ License: GPL-2
 Encoding: UTF-8
 LazyData: true
 Depends: R(>= 3.6)
-URL: https://github.com/umr-amap/BIOMASS
-BugReports: https://github.com/umr-amap/BIOMASS/issues
+URL: https://umr-amap.github.io/BIOMASS/,
+        https://github.com/umr-amap/BIOMASS/
+BugReports: https://github.com/umr-amap/BIOMASS/issues/
 Imports: minpack.lm, jsonlite, methods, proj4, graphics, stats, utils,
-        data.table (>= 1.9.8), rappdirs, sf, terra
+        data.table (>= 1.9.8), rappdirs, sf, terra, ggplot2
 VignetteBuilder: knitr
-Suggests: knitr, rmarkdown, prettydoc, testthat, curl, geodata, httr2
+Suggests: knitr, rmarkdown, prettydoc, testthat, vdiffr, curl, geodata,
+        httr2, pkgdown, dplyr
 RoxygenNote: 7.3.2
 NeedsCompilation: no
-Packaged: 2025-01-21 17:11:03 UTC; lamonica
+Packaged: 2025-02-24 12:58:52 UTC; lamonica
 Author: Maxime Réjou-Méchain [aut, dtc],
   Guillaume Cornu [aut] (<https://orcid.org/0000-0002-7523-5176>),
   Dominique Lamonica [aut, cre],
+  Arthur Bailly [aut],
   Arthur Pere [aut],
   Ariane Tanguy [aut],
-  Camille Piponiot [aut],
   Jerome Chave [dtc],
-  Bruno Hérault [aut],
   Ted Feldpausch [dtc],
-  Philippe Verley [ctb]
+  Philippe Verley [ctb],
+  Camille Piponiot [aut],
+  Bruno Hérault [aut]
 Maintainer: Dominique Lamonica <dominique.lamonica@ird.fr>
 Repository: CRAN
-Date/Publication: 2025-02-12 18:20:05 UTC
+Date/Publication: 2025-02-24 13:50:03 UTC

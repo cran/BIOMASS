@@ -1,22 +1,7 @@
-if (getRversion() >= "2.15.1") {
-  utils::globalVariables(c(
-    "query", "from", "submittedName", "nameSubmitted","slice", ".I",
-    "..score", "matchedName", "outName", "nameModified", "scientificScore",
-    "genusCorrected", "speciesCorrected", "acceptedName", "nameScientific",
-    "Name_submitted", "Overall_score", "Name_matched", "Accepted_name",
-    ".N", "."
-  ))
-}
-
-##%######################################################%##
-#                                                          #
-####             ' Checking typos in names              ####
-#                                                          #
-##%######################################################%##
-
+#' Correct trees taxonomy
 #'
+#' @description
 #' This function corrects typos for a given taxonomic name using the Taxonomic Name Resolution Service (TNRS).
-#'
 #'
 #' @details
 #' This function create a file named correctTaxo.log (see Localisation), this file have the memory of all the previous requests, as
@@ -25,9 +10,7 @@ if (getRversion() >= "2.15.1") {
 #' By default, names are queried in batches of 500, with a 0.5s delay between each query. These values can be modified using options:
 #' `options(BIOMASS.batch_size=500)` for batch size (max 1000), `options(BIOMASS.wait_delay=0.5)` for delay (in seconds).
 #'
-#'
 #' @inheritSection cacheManager Localisation
-#'
 #'
 #' @param genus Vector of genera to be checked. Alternatively, the whole species name (genus + species)
 #'  or (genus + species + author) may be given (see example).
@@ -45,7 +28,7 @@ if (getRversion() >= "2.15.1") {
 #' @author Ariane TANGUY, Arthur PERE, Maxime REJOU-MECHAIN, Guillaume CORNU
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' correctTaxo(genus = "Astrocarium", species = "standleanum")
 #' correctTaxo(genus = "Astrocarium standleanum")
 #' }
@@ -117,7 +100,7 @@ correctTaxo <- function(genus, species = NULL, score = 0.5, useCache = FALSE, ve
   # sub-function definition -------------------------------------------------
 
   # split x always returning count columns (padding with NA)
-  tstrsplit_NA <- function(x, pattern = " ", count = 2) {
+  tstrsplit_NA <- function(x, pattern = "\\s+", count = 2) {
     # NOTE extraneous columns ignored maybe better paste them together
     split <- utils::head(tstrsplit(x, pattern), count)
 
@@ -130,7 +113,13 @@ correctTaxo <- function(genus, species = NULL, score = 0.5, useCache = FALSE, ve
 
   # Data preparation --------------------------------------------------------
 
-  genus <- as.character(genus)
+  # remove spaces at beginning and end, and remove extra spacing
+  squish <- function(x) {
+    x <- gsub("(^\\s+)|(\\s+$)", "", x)
+    gsub("\\s+", " ", x)
+  }
+  
+  genus <- squish(as.character(genus))
 
   if (is.null(species)) {
 
@@ -143,7 +132,7 @@ correctTaxo <- function(genus, species = NULL, score = 0.5, useCache = FALSE, ve
     # split genus (query)
     userTaxo[, c("genus", "species") := tstrsplit_NA(query)]
   } else {
-    species <- as.character(species)
+    species <- squish(as.character(species))
 
     # Create a dataframe with the original values
     userTaxo <- data.table(
@@ -156,10 +145,10 @@ correctTaxo <- function(genus, species = NULL, score = 0.5, useCache = FALSE, ve
   }
 
   # If there is an empty genus
-  userTaxo[genus == "", ":="(genus = NA_character_, species = NA_character_, query = NA_character_)]
+  userTaxo[is.na(genus) | (genus == ""), ":="(genus = NA_character_, species = NA_character_, query = NA_character_)]
 
   # If there is empty species
-  userTaxo[species == "", ":="(species = NA_character_, query = gsub(" ", "", query))]
+  userTaxo[is.na(species) | (species == ""), ":="(species = NA_character_, query = gsub(" ", "", query))]
 
   # get unique values
   qryTaxo <- unique(userTaxo[!is.na(query)])
@@ -179,7 +168,7 @@ correctTaxo <- function(genus, species = NULL, score = 0.5, useCache = FALSE, ve
         useCache <- TRUE
       } else {
         if (verbose) {
-          message("Cache last modification time : ", as.character.POSIXt(file.info(cachePath)["mtime"]))
+          message("Cache last modification time : ", as.character.POSIXt(file.info(cachePath)$mtime))
         }
         cachedTaxo <- fread(file = cachePath)
         cachedTaxo[, from := "cache"]
@@ -211,67 +200,77 @@ correctTaxo <- function(genus, species = NULL, score = 0.5, useCache = FALSE, ve
 
     # split missing taxo in chunks of 30
     slices <- split(missingTaxo[, slice := ceiling(.I / BATCH_SIZE)], by = "slice", keep.by = TRUE)
-
-    # for each slice of queries
-    if (verbose) {
-      pb <- utils::txtProgressBar(style = 3)
-    }
-    queriedTaxo <- rbindlist(lapply(slices, function(slice) {
-
-      req <- httr2::request("https://tnrsapi.xyz/tnrs_api.php")
-      req <- httr2::req_headers(req,
-        'Accept' = 'application/json',
-        'Content-Type' = "application/json",
-        'charset' = "UTF-8"
-      )
-      req <- httr2::req_body_json(req, list(
-        opts = list(
-          class = jsonlite::unbox("wfo"),
-          mode = jsonlite::unbox("resolve"),
-          matches = jsonlite::unbox("best")
-        ),
-        data = unname(data.frame(seq_along(slice$query),slice$query))
-      ))
-
-      req <- httr2::req_error(req, function(response) FALSE)
-      qryResult <- httr2::req_perform(req)
-
-      if (httr2::resp_is_error(qryResult)) {
-        message("There appears to be a problem reaching the tnrs API.")
-        return(invisible(NULL))
+    
+    pb <- if(verbose) utils::txtProgressBar(style = 3)
+    
+    queriedTaxo <- tryCatch(
+      {
+        # for each slice of queries
+        queriedTaxo <- rbindlist(lapply(slices, function(slice) {
+          
+          req <- httr2::request("https://tnrsapi.xyz/tnrs_api.php")
+          req <- httr2::req_headers(req,
+            'Accept' = 'application/json',
+            'Content-Type' = "application/json",
+            'charset' = "UTF-8"
+          )
+          req <- httr2::req_body_json(req, list(
+            opts = list(
+              class = jsonlite::unbox("wfo"),
+              mode = jsonlite::unbox("resolve"),
+              matches = jsonlite::unbox("best")
+            ),
+            data = unname(data.frame(seq_along(slice$query),slice$query))
+          ))
+          
+          req <- httr2::req_timeout(req, 20)
+          qryResult <- httr2::req_perform(req)
+          
+          # parse answer from tnrs
+          answer <- setDT(httr2::resp_body_json(qryResult, simplifyVector = TRUE))
+          
+          # recode empty strings as NA
+          answer[, names(answer) := lapply(.SD, function(x) {
+            x[x==""]<-NA
+            x
+          })]
+          
+          # format result
+          answer <- answer[, .(
+            submittedName = Name_submitted,
+            score = as.numeric(Overall_score),
+            matchedName = Name_matched,
+            from = "iplant_tnrs",
+            acceptedName = Accepted_name
+          )]
+          
+          if (verbose) {
+            utils::setTxtProgressBar(pb, slice$slice[1] / length(slices))
+          }
+          
+          Sys.sleep(WAIT_DELAY)
+          
+          answer
+        }))        
+      },
+      error = function(e) {
+        structure(list(), message = e$message)
+      },
+      finally = {
+        # close progress bar
+        if(!is.null(pb)) {
+          close(pb)
+        }
       }
-
-      # parse answer from tnrs
-      answer <- setDT(httr2::resp_body_json(qryResult, simplifyVector = TRUE))
-
-      # recode empty strings as NA
-      answer[, names(answer) := lapply(.SD, function(x) {
-        x[x==""]<-NA
-        x
-      })]
-
-      # format result
-      answer <- answer[, .(
-        submittedName = Name_submitted,
-        score = as.numeric(Overall_score),
-        matchedName = Name_matched,
-        from = "iplant_tnrs",
-        acceptedName = Accepted_name
-      )]
-
-      if (verbose) {
-        utils::setTxtProgressBar(pb, slice$slice[1] / length(slices))
-      }
-
-      Sys.sleep(WAIT_DELAY)
-
-      answer
-    }))
-    if (verbose) {
-      close(pb)
-    }
+    )
   }
 
+  if(nrow(missingTaxo) && is.null(nrow(queriedTaxo))) {
+    warning("There seem to be a problem reaching the TNRS API!\n", 
+      attr(queriedTaxo, "message"), immediate. = TRUE, call. = FALSE)
+    return(invisible(NULL))
+  }
+  
   # build reference taxonomy from cached and queried ones
   fullTaxo <- rbindlist(list(queriedTaxo, cachedTaxo), fill = TRUE)
 

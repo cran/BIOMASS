@@ -1,21 +1,3 @@
-#' APG dataset
-#'
-#' Retrieved APG III families and orders from genus names of the sub-dataset KarnatakaForest using BIOMASS getTaxonomy function : 
-#' getTaxonomy(KarnatakaForestsub$genusCorr, findOrder = TRUE)
-#'
-#' @docType data
-#' @usage data("APG")
-#' @format
-#' A data frame with 5766 observations on the following 3 variables :
-#'   - `inputGenus`: Names of the genus
-#'   - `family`: Names of the retrieved family
-#'   - `order`: Names of the retrieved order
-#'
-#' @references
-#' See "KarnatakaForest" dataset.
-#' @keywords datasets
-"APG"
-
 #' Angiosperm Phylogeny Group (APG III) dataset
 #'
 #' APGIII Families taken from the Angiosperm Phylogeny Website (http://www.mobot.org/MOBOT/research/APweb/)
@@ -36,8 +18,6 @@
 #' @keywords datasets internal
 #'
 "apgFamilies"
-
-
 
 
 #' Feldpausch et al. 2012 coefficients for generalized height-diameter models
@@ -65,7 +45,7 @@
 #' @keywords datasets internal
 "feldCoef"
 
-
+ 
 #' Genus Family database
 #'
 #' To create this database, we combined the genera from The Plant List (http://www.theplantlist.org/1.1/browse/-/-/)
@@ -90,32 +70,83 @@
 "genusFamily"
 
 
-#' Karnataka forest dataset
+#' Nouragues forest dataset
 #'
-#' Dataset from 96 forest plots (1 ha) established in the central Western Ghats of India by Ramesh et al. (2010).
-#'
+#' This dataset contains 4 of the 12 plots of `Petit Plateau' permanent plots fifth census, 2012, Nouragues forestTree dataset (French Guiana). For educational purposes, some virtual trees have been added in the dataset. Dead trees have been removed.
+#' 
 #' @docType data
-#' @usage data("KarnatakaForest")
+#' @usage data(NouraguesTrees)
 #' @format
-#' A data frame with 65889 observations on the following 8 variables :
-#'   - `plotId`: Names of the plots
-#'   - `treeId`: Tree Id, contains a letter (A, B, C...) when an individual has multiple stems
-#'   - `family`: Family
-#'   - `genus`: Genus
-#'   - `species`: Species
-#'   - `D`: Diameter (cm)
-#'   - `lat`: Latitude
-#'   - `long`: Longitude
+#' A data frame with 2050 observations (trees) of the 8 following variables :
+#'   - `site`: Name of the site set up in the Nouragues forest
+#'   - `plot`: Plot ID
+#'   - `Xfield`: Tree location on the x-axis in the local coordinate system (defined by the 4 corners of the plot) 
+#'   - `Yfield`: Tree location on the y-axis in the local coordinate system
+#'   - `family`: Tree family
+#'   - `genus`: Tree genus
+#'   - `species`: Tree species
+#'   - `D`: Tree diameter (in cm)
 #'
 #' @references
-#' Ramesh, B. R. et al. (2010).
-#' _Forest stand structure and composition in 96 sites along environmental gradients in the central Western Ghats of India_
-#' Ecological Archives E091-216. Ecology, 91(10), 3118-3118.
+#'  `Petit Plateau' permanent plots fifth census, 2012, Nouragues forest, [https://doi.org/10.18167/DVN1/TZ1RL9](https://dataverse.cirad.fr/dataset.xhtml?persistentId=doi:10.18167/DVN1/TZ1RL9), CIRAD Dataverse, V1
 #' @examples
-#' data(KarnatakaForest)
-#' str(KarnatakaForest)
+#' data(NouraguesTrees)
+#' str(NouraguesTrees)
 #' @keywords datasets
-"KarnatakaForest"
+"NouraguesTrees"
+
+
+#' Nouragues plot coordinates
+#'
+#' Dataset containing the corner coordinates of 4 plots of `Petit Plateau' in Nouragues forest (French Guiana).
+#' 
+#' @docType data
+#' @usage data(NouraguesCoords)
+#' @format
+#' A data frame with 16 observations (GPS measurements) of the 8 following variables :
+#'   - `Site`: Name of the site set up in the Nouragues forest
+#'   - `Plot`: Plot ID of the site
+#'   - `Xfield`: Corner location on the x-axis in the local coordinate system (defined by the 4 corners of the plot) 
+#'   - `Yfield`: Corner location on the y-axis in the local coordinate system
+#'   - `Xutm`: Corner location on the x-axis in the UTM coordinate system
+#'   - `Yutm`: Corner location on the y-axis in the UTM coordinate system
+#'   - `Long`: Corner longitude coordinate
+#'   - `Lat`: Corner latitude coordinate
+#'
+#' @references
+#' Jaouen, Gaëlle, 2023, "Nouragues forest permanent plots details", \doi{10.18167/DVN1/HXKS4E}, CIRAD Dataverse, V2
+#' @examples
+#' data(NouraguesCoords)
+#' str(NouraguesCoords)
+#' @keywords datasets
+"NouraguesCoords"
+
+
+#' Nouragues plot 201 coordinates
+#' 
+#' Simulated corner coordinates of Nouragues 'Petit plateau' plot 201. The original coordinates have been modified to make the plot non-squared, and 10 repeated measurements of each corner have been simulated adding a random error to x and y coordinates.
+#' 
+#' @docType data
+#' @usage data(NouraguesPlot201)
+#' @format
+#' A data frame with 40 (simulated GPS measurements) of the 8 following variables :
+#'   - `Site`: Name of the site set up in the Nouragues forest
+#'   - `Plot`: Plot ID of the site
+#'   - `Xfield`: Corner location on the x-axis in the local coordinate system (defined by the 4 corners of the plot) 
+#'   - `Yfield`: Corner location on the y-axis in the local coordinate system
+#'   - `Xutm`: Corner location on the x-axis in the UTM coordinate system
+#'   - `Yutm`: Corner location on the y-axis in the UTM coordinate system
+#'   - `Long`: Corner longitude coordinate
+#'   - `Lat`: Corner latitude coordinate
+#'
+#' @references
+#' Jaouen, Gaëlle, 2023, "Nouragues forest permanent plots details", \doi{10.18167/DVN1/HXKS4E}, CIRAD Dataverse, V2
+#' @examples
+#' data(NouraguesPlot201)
+#' str(NouraguesPlot201)
+#' @keywords datasets
+"NouraguesPlot201"
+
 
 
 #' Height-Diameter data
@@ -226,24 +257,6 @@
 #' str(sd_10)
 #' @keywords datasets wdData getWoodDensity internal
 "sd_10"
-
-#' Taxo dataset
-#'
-#' Corrected taxonomy  of the sub-dataset KarnatakaForest using BIOMASS correctTaxo function : 
-#' correctTaxo(genus = KarnatakaForestsub$genus, species = KarnatakaForestsub$species, useCache = FALSE, verbose = FALSE)
-#'
-#' @docType data
-#' @usage data("Taxo")
-#' @format
-#' A data frame with 5766 observations on the following 3 variables :
-#'   - `genusCorrected`: Corrected names of the genus
-#'   - `speciesCorrected`: Corrected names of the species
-#'   - `nameModified`: TRUE when names have been modified, FALSE if not
-#'
-#' @references
-#' See "KarnatakaForest" dataset.
-#' @keywords datasets
-"Taxo"
 
 
 #' The global wood density database

@@ -1,19 +1,7 @@
-if (getRversion() >= "2.15.1") {
-  utils::globalVariables(c(
-    "regionId", "i.family", "wd", "wd.x", "wd.y", "taxo", ".EACHI",
-    "meanWDsp", "nIndsp", "sdWDsp", "meanWD", "meanWDgn", "nInd", "nIndgn",
-    "sdWD", "sdWDgn", "levelWD", "meanWDfm", "nIndfm", "sdWDfm",
-    "meanWDst", "nIndst", "sdWDst"
-  ))
-}
-
-
 #' Estimating wood density
 #'
-#' The function estimates the wood density (WD) of the trees from their taxonomy or from their
-#' congeners using the global wood density database (Chave et al. 2009, Zanne et al. 2009) or
-#' any additional dataset. The WD can either be attributed to an individual at a species, genus,
-#' family or stand level.
+#' @description
+#' The function estimates the wood density (WD) of the trees from their taxonomy or from their congeners using the global wood density database (Chave et al. 2009, Zanne et al. 2009) or any additional dataset. The WD can either be attributed to an individual at a species, genus, family or stand level.
 #'
 #' @param genus Vector of genus names
 #' @param species Vector of species names
@@ -80,38 +68,38 @@ if (getRversion() >= "2.15.1") {
 #'
 #' @examples
 #' # Load a data set
-#' data(KarnatakaForest)
+#' data(NouraguesTrees)
 #'
 #' # Compute the Wood Density up to the genus level and give the mean wood density of the dataset
 #' \donttest{
 #' WD <- getWoodDensity(
-#'   genus = KarnatakaForest$genus,
-#'   species = KarnatakaForest$species
+#'   genus = NouraguesTrees$Genus,
+#'   species = NouraguesTrees$Species
 #' )
 #' }
 #' 
 #' # Compute the Wood Density up to the genus level and then give the mean wood density per stand
 #' \donttest{
 #' WD <- getWoodDensity(
-#'   genus = KarnatakaForest$genus,
-#'   species = KarnatakaForest$species,
-#'   stand = KarnatakaForest$plotId
+#'   genus = NouraguesTrees$Genus,
+#'   species = NouraguesTrees$Species,
+#'   stand = NouraguesTrees$plotId
 #' )
 #' }
 #' 
 #' # Compute the Wood Density up to the family level and then give the mean wood density per stand
 #' \donttest{
 #' WD <- getWoodDensity(
-#'   family = KarnatakaForest$family,
-#'   genus = KarnatakaForest$genus,
-#'   species = KarnatakaForest$species,
-#'   stand = KarnatakaForest$plotId
+#'   family = NouraguesTrees$family,
+#'   genus = NouraguesTrees$Genus,
+#'   species = NouraguesTrees$Species,
+#'   stand = NouraguesTrees$plotId
 #' )
 #' str(WD)
 #' }
 #' @seealso [wdData], [sd_10]
 #' @keywords Wood density
-#' @importFrom data.table data.table := setDF setDT setkey copy chmatch %chin%
+#' @importFrom data.table data.table := setDF setDT setkey chmatch %chin%
 #'
 getWoodDensity <- function(genus, species, stand = NULL, family = NULL, region = "World",
                            addWoodDensityData = NULL, verbose = TRUE) {
@@ -142,17 +130,15 @@ getWoodDensity <- function(genus, species, stand = NULL, family = NULL, region =
     }
   }
 
-
-
-
+  
   # Data processing ---------------------------------------------------------
 
   # Load global wood density database downloaded from http://datadryad.org/handle/10255/dryad.235
-  wdData <- setDT(copy(BIOMASS::wdData))
+  wdData <- data.table(BIOMASS::wdData)
 
   # Load the mean standard deviation observed at the species, Genus or Family level
   # in the Dryad dataset when at least 10 individuals are considered
-  sd_10 <- setDT(copy(BIOMASS::sd_10))
+  sd_10 <- data.table(BIOMASS::sd_10)
   sd_tot <- sd(wdData$wd)
 
   Region <- tolower(region)
@@ -175,7 +161,7 @@ getWoodDensity <- function(genus, species, stand = NULL, family = NULL, region =
   if (!is.null(addWoodDensityData)) {
     setDT(addWoodDensityData)
     if (!("family" %in% names(addWoodDensityData))) {
-      genusFamily <- setDT(copy(BIOMASS::genusFamily))
+      genusFamily <- data.table(BIOMASS::genusFamily)
       addWoodDensityData[genusFamily, on = "genus", family := i.family]
     }
     addWoodDensityData <- addWoodDensityData[!is.na(wd), ]
@@ -195,7 +181,7 @@ getWoodDensity <- function(genus, species, stand = NULL, family = NULL, region =
     inputData[, family := as.character(family)]
   } else {
     if (!exists("genusFamily", inherits = FALSE)) {
-      genusFamily <- setDT(copy(BIOMASS::genusFamily))
+      genusFamily <- data.table(BIOMASS::genusFamily)
     }
     inputData[genusFamily, on = "genus", family := i.family]
   }
