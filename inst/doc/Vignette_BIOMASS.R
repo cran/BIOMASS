@@ -140,19 +140,26 @@ WD_error_prop <- AGBmonteCarlo(
   Dpropag = 0 , errH = 0 # no error propagation on D and H here
 )
 
-## ----H_feld_error_prop, eval = FALSE------------------------------------------
-#  H_feld_error_prop <- AGBmonteCarlo(
-#    D = NouraguesTrees$D, WD = NouraguesTrees$WD, H = NouraguesTrees$H_model,
-#    errH = H_feldspausch$RSE,
-#    Dpropag = 0 , errWD = rep(0,nrow(NouraguesTrees)) # no error propagation on D and WD here
-#  )
-
 ## ----H_model_error_prop-------------------------------------------------------
 H_model_error_prop <- AGBmonteCarlo(
   D = NouraguesTrees$D, WD = NouraguesTrees$WD, # we do not provide H
   HDmodel = HDmodel, # but we provide HDmodel
   Dpropag = 0 , errWD = rep(0,nrow(NouraguesTrees)) # no error propagation on D and WD here
 )
+
+## ----H_feld_error_prop, eval = FALSE------------------------------------------
+#  H_feld_error_prop <- AGBmonteCarlo(
+#    D = NouraguesTrees$D, WD = NouraguesTrees$WD,
+#    H = NouraguesTrees$H_feldspausch, errH = H_feldspausch$RSE, # we provide H and errH
+#    Dpropag = 0 , errWD = rep(0,nrow(NouraguesTrees)) # no error propagation on D and WD here
+#  )
+
+## ----H_chave_error_prop, eval = FALSE-----------------------------------------
+#  H_chave_error_prop <- AGBmonteCarlo(
+#    D = NouraguesTrees$D, WD = NouraguesTrees$WD, # we do not provide H
+#    coord = coords, # but we provide the vector of median coordinates of the plots
+#    Dpropag = 0 , errWD = rep(0,nrow(NouraguesTrees)) # no error propagation on D and WD here
+#  )
 
 ## ----error_prop---------------------------------------------------------------
 error_prop <- AGBmonteCarlo(

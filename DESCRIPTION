@@ -2,8 +2,8 @@ Package: BIOMASS
 Type: Package
 Title: Estimating Aboveground Biomass and Its Uncertainty in Tropical
         Forests
-Version: 2.2.3
-Date: 2025-02-20
+Version: 2.2.4
+Date: 2025-05-19
 Authors@R: c(
 	person("Maxime", "Réjou-Méchain", email = "maxime.rejou@gmail.com", role = c("aut", "dtc")),
 	person("Guillaume","Cornu", email = "gcornu@cirad.fr", role = c("aut"), comment = c(ORCID="0000-0002-7523-5176")),	
@@ -17,12 +17,7 @@ Authors@R: c(
 	person("Camille", "Piponiot", role = c("aut")),
 	person("Bruno", "Hérault", email = "bruno.herault@cirad.fr", role = c("aut"))
   )
-Description: Contains functions to estimate aboveground biomass/carbon and its uncertainty in tropical forests. 
-	These functions allow to (1) retrieve and to correct taxonomy, (2) estimate wood density and its uncertainty, 
-	(3) construct height-diameter models, (4) manage tree and plot coordinates, 
-	(5) estimate the aboveground biomass/carbon at the stand level with associated uncertainty. 
-	To cite 'BIOMASS', please use citation("BIOMASS"). 
-	See more in the article of Réjou-Méchain et al. (2017) <doi:10.1111/2041-210X.12753>.
+Description: Contains functions for estimating above-ground biomass/carbon and its uncertainty in tropical forests. These functions allow to (1) retrieve and correct taxonomy, (2) estimate wood density and its uncertainty, (3) build height-diameter models, (4) manage tree and plot coordinates, (5) estimate above-ground biomass/carbon at stand level with associated uncertainty. To cite ‘BIOMASS’, please use citation(‘BIOMASS’). For more information, see Réjou-Méchain et al. (2017) <doi:10.1111/2041-210X.12753>.
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
@@ -37,9 +32,9 @@ Suggests: knitr, rmarkdown, prettydoc, testthat, vdiffr, curl, geodata,
         httr2, pkgdown, dplyr
 RoxygenNote: 7.3.2
 NeedsCompilation: no
-Packaged: 2025-02-24 12:58:52 UTC; lamonica
+Packaged: 2025-05-19 09:49:53 UTC; lamonica
 Author: Maxime Réjou-Méchain [aut, dtc],
-  Guillaume Cornu [aut] (<https://orcid.org/0000-0002-7523-5176>),
+  Guillaume Cornu [aut] (ORCID: <https://orcid.org/0000-0002-7523-5176>),
   Dominique Lamonica [aut, cre],
   Arthur Bailly [aut],
   Arthur Pere [aut],
@@ -51,4 +46,4 @@ Author: Maxime Réjou-Méchain [aut, dtc],
   Bruno Hérault [aut]
 Maintainer: Dominique Lamonica <dominique.lamonica@ird.fr>
 Repository: CRAN
-Date/Publication: 2025-02-24 13:50:03 UTC
+Date/Publication: 2025-05-19 10:10:02 UTC

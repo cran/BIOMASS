@@ -17,11 +17,16 @@ test_that("subplot_summary error", {
   expect_message(subplot_summary(subplots, value = "D", draw_plot = F), "Projected coordinates are not found in sub_corner_coord$subplots, tree metric will be summarised in the relative coordinate system", fixed=TRUE)
 
   subplots <- suppressWarnings(divide_plot(corner_data, rel_coord = c("x_rel","y_rel"), proj_coord = c("x_proj","y_proj"), grid_size = 50, tree_data = NouraguesTrees[NouraguesTrees$Plot==201,], tree_coords = c("Xfield","Yfield")))
-  expect_error(subplot_summary(subplots, draw_plot = F) , "You must supply the tree variable to be summarised via the value argument.", fixed=TRUE)
+  expect_error(subplot_summary(subplots, draw_plot = F) , "You must provide the tree variable to be summarised via the value argument.", fixed=TRUE)
   expect_error(subplot_summary(subplots, value = "a", draw_plot = F) , "a is not a column name of subplots$tree_data", fixed=TRUE)
 
-  expect_error(subplot_summary(subplots, value = "D", draw_plot = F, fun = "quantile") , "the function supplied using `fun =` is not a function", fixed=TRUE)
-  expect_error(subplot_summary(subplots, value = "D", draw_plot = F, fun = quantile) , "the function supplied using `fun` must return a single value", fixed=TRUE)
+  expect_error(subplot_summary(subplots, value = "D", draw_plot = F, fun = "quantile") , "the function provided using `fun =` is not a function", fixed=TRUE)
+  expect_error(subplot_summary(subplots, value = c("D","D"), draw_plot = F, fun = list(D="quantile",D=mean)) , "function(s) provided (not a function)", fixed=TRUE)
+  expect_error(subplot_summary(subplots, value = "D", draw_plot = F, fun = quantile) , "the function provided using `fun` must return a single value", fixed=TRUE)
+  
+  expect_error(subplot_summary(subplots, value = c("D","D"), draw_plot = F, fun = list(D=mean)) , "the lengths of 'value' and 'fun' are not the same", fixed=TRUE)
+  expect_error(subplot_summary(subplots, value = c("D","D","D"), draw_plot = F, fun = list(D=mean,sum,sd), per_ha = c(T,F)) , "the lengths of 'value' and 'per_ha' are not the same", fixed=TRUE)
+  
 })
 
 test_that("subplot_summary", {
@@ -35,12 +40,18 @@ test_that("subplot_summary", {
   res <- suppressMessages(subplot_summary(subplots, value = "D", draw_plot = F))
   vdiffr::expect_doppelganger("subplot-summary-proj-coords", res$plot_design)
 
+  # Test with longlat
+  corner_data[c("long","lat")] <- as.data.frame( proj4::project(corner_data[c("x_proj","y_proj")], proj = "+proj=utm +zone=22 +north +ellps=WGS84 +datum=WGS84 +units=m +no_defs", inverse = TRUE) )
+  subplots_longlat <- suppressWarnings(divide_plot(corner_data, rel_coord = c("x_rel","y_rel"), longlat = c("long","lat"), grid_size = 25, tree_data = NouraguesTrees[NouraguesTrees$Plot==201,], tree_coords = c("Xfield","Yfield")))
+  res <- suppressMessages(subplot_summary(subplots_longlat, value = "D", draw_plot = F))
+  # vdiffr::expect_doppelganger("subplot-summary-geographic-coords", res$plot_design) # this test works for ubuntu checks but not for windows and MAC
+  expect_equivalent(res$polygon$sf_subplot_polygon[[1]][[1]][1:4,], as.matrix(subplots_longlat$sub_corner_coord[1:4,c("long","lat")]) )
+  
   # Test when there isn't a tree in a subplot
   subplots_less_trees <- subplots
   subplots_less_trees$tree_data <- subplots_less_trees$tree_data[subplots_less_trees$tree_data$subplot_ID != "subplot_0_1",]
   res_less <- subplot_summary(subplots_less_trees, value = "D", draw_plot = F)
-  expect_equivalent(res$tree_summary[-2,] , res_less$tree_summary)
-  vdiffr::expect_doppelganger("subplot-summary-proj-coords", suppressMessages(subplot_summary(subplots, value = "D", draw_plot = F)$plot_design))
+  expect_equivalent(res_less$tree_summary[2,"D_sum_per_ha"] , 0)
 
   # Test with quantile function
   res_quantile <- subplot_summary(subplots, value = "D", draw_plot = F, fun = quantile, probs=0.75)
@@ -55,4 +66,10 @@ test_that("subplot_summary", {
   res_multiple <- subplot_summary(multiple_subplots, value = "D", draw_plot = F)
   vdiffr::expect_doppelganger("subplot-summary-multiple-plot-201", res_multiple$plot_design$`201`)
   vdiffr::expect_doppelganger("subplot-summary-multiple-plot-204", res_multiple$plot_design$`204`)
+  
+  # Test with multiple metrics
+  res_metrics <- subplot_summary(multiple_subplots, value = c("D","x_rel"), fun = list(D=sum,x_rel=mean), per_ha = c(T,F) , draw_plot = F)
+  vdiffr::expect_doppelganger("subplot-summary-multiple-metrics-204", res_metrics$plot_design$`204`[[2]])
+  
 })
+
