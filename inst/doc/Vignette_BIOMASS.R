@@ -10,20 +10,20 @@ data("NouraguesTrees")
 knitr::kable(head(NouraguesTrees))
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  # By default
-#  createCache()
-#  # Or if you want to set your own cache folder
-#  createCache("the_path_to_your_cache_folder")
-#  # Or
-#  options("BIOMASS.cache" = "the_path_to_your_cache_folder")
-#  
+# # By default
+# createCache()
+# # Or if you want to set your own cache folder
+# createCache("the_path_to_your_cache_folder")
+# # Or
+# options("BIOMASS.cache" = "the_path_to_your_cache_folder")
+# 
 
 ## ----save_correctTaxo, eval=FALSE---------------------------------------------
-#  Taxo <- correctTaxo(
-#    genus = NouraguesTrees$Genus, # genus also accepts the whole species name (genus + species) or (genus + species + author)
-#    species = NouraguesTrees$Species,
-#    useCache = TRUE, verbose = FALSE)
-#  saveRDS(Taxo, file = "saved_data/Taxo_vignette.rds")
+# Taxo <- correctTaxo(
+#   genus = NouraguesTrees$Genus, # genus also accepts the whole species name (genus + species) or (genus + species + author)
+#   species = NouraguesTrees$Species,
+#   useCache = TRUE, verbose = FALSE)
+# saveRDS(Taxo, file = "saved_data/Taxo_vignette.rds")
 
 ## ----load_correctTaxo, include=FALSE------------------------------------------
 Taxo <- readRDS(file = "saved_data/Taxo_vignette.rds")
@@ -37,9 +37,9 @@ NouraguesTrees$Species[4]
 Taxo[4,]
 
 ## ----getTaxonomy, eval=FALSE--------------------------------------------------
-#  APG <- getTaxonomy(NouraguesTrees$GenusCorrected, findOrder = TRUE)
-#  NouraguesTrees$familyAPG <- APG$family
-#  NouraguesTrees$orderAPG <- APG$order
+# APG <- getTaxonomy(NouraguesTrees$GenusCorrected, findOrder = TRUE)
+# NouraguesTrees$familyAPG <- APG$family
+# NouraguesTrees$orderAPG <- APG$order
 
 ## ----getWoodDensity-----------------------------------------------------------
 wood_densities <- getWoodDensity(
@@ -59,18 +59,18 @@ sum(wood_densities$levelWD == "genus")
 sum(!wood_densities$levelWD %in% c("genus", "species"))
 
 ## ----LocalWoodDensity, eval=FALSE---------------------------------------------
-#  LocalWoodDensity <- data.frame(
-#    genus = c("Paloue", "Handroanthus"),
-#    species = c("princeps", "serratifolius"),
-#    wd = c(0.65, 0.72) )
-#  
-#  add_wood_densities <- getWoodDensity(
-#    genus = NouraguesTrees$GenusCorrected,
-#    species = NouraguesTrees$SpeciesCorrected,
-#    family = NouraguesTrees$familyAPG,
-#    stand = NouraguesTrees$Plot,
-#    addWoodDensityData = LocalWoodDensity
-#  )
+# LocalWoodDensity <- data.frame(
+#   genus = c("Paloue", "Handroanthus"),
+#   species = c("princeps", "serratifolius"),
+#   wd = c(0.65, 0.72) )
+# 
+# add_wood_densities <- getWoodDensity(
+#   genus = NouraguesTrees$GenusCorrected,
+#   species = NouraguesTrees$SpeciesCorrected,
+#   family = NouraguesTrees$familyAPG,
+#   stand = NouraguesTrees$Plot,
+#   addWoodDensityData = LocalWoodDensity
+# )
 
 ## ----load_NouraguesHD---------------------------------------------------------
 data("NouraguesHD")
@@ -101,14 +101,14 @@ H_feldspausch <- retrieveH(
 NouraguesTrees$H_feldspausch <- H_feldspausch$H
 
 ## ----retrieveH_chave, eval=FALSE----------------------------------------------
-#  data("NouraguesCoords") #contains corner coordinates
-#  coords <- apply(NouraguesCoords[c("Long","Lat")] , 2, mean) # compute the mean of the corner coordinates
-#  
-#  H_chave  <- retrieveH(
-#    D = NouraguesTrees$D,
-#    coord = coords)
-#  
-#  NouraguesTrees$H_chave <- H_chave$H
+# data("NouraguesCoords") #contains corner coordinates
+# coords <- apply(NouraguesCoords[c("Long","Lat")] , 2, mean) # compute the mean of the corner coordinates
+# 
+# H_chave  <- retrieveH(
+#   D = NouraguesTrees$D,
+#   coord = coords)
+# 
+# NouraguesTrees$H_chave <- H_chave$H
 
 ## ----computeAGB---------------------------------------------------------------
 NouraguesTrees$AGB <- computeAGB(
@@ -121,10 +121,10 @@ NouraguesTrees$AGB <- computeAGB(
 #saveRDS(NouraguesTrees, file = "saved_data/NouraguesTreesAGB.rds")
 
 ## ----computAGB_chave, eval=FALSE----------------------------------------------
-#  NouraguesTrees$AGB_Chave <- computeAGB(
-#      D = NouraguesTrees$D,
-#      WD = NouraguesTrees$WD,
-#      coord = coords)
+# NouraguesTrees$AGB_Chave <- computeAGB(
+#     D = NouraguesTrees$D,
+#     WD = NouraguesTrees$WD,
+#     coord = coords)
 
 ## ----D_error_prop-------------------------------------------------------------
 D_error_prop <- AGBmonteCarlo(
@@ -148,18 +148,18 @@ H_model_error_prop <- AGBmonteCarlo(
 )
 
 ## ----H_feld_error_prop, eval = FALSE------------------------------------------
-#  H_feld_error_prop <- AGBmonteCarlo(
-#    D = NouraguesTrees$D, WD = NouraguesTrees$WD,
-#    H = NouraguesTrees$H_feldspausch, errH = H_feldspausch$RSE, # we provide H and errH
-#    Dpropag = 0 , errWD = rep(0,nrow(NouraguesTrees)) # no error propagation on D and WD here
-#  )
+# H_feld_error_prop <- AGBmonteCarlo(
+#   D = NouraguesTrees$D, WD = NouraguesTrees$WD,
+#   H = NouraguesTrees$H_feldspausch, errH = H_feldspausch$RSE, # we provide H and errH
+#   Dpropag = 0 , errWD = rep(0,nrow(NouraguesTrees)) # no error propagation on D and WD here
+# )
 
 ## ----H_chave_error_prop, eval = FALSE-----------------------------------------
-#  H_chave_error_prop <- AGBmonteCarlo(
-#    D = NouraguesTrees$D, WD = NouraguesTrees$WD, # we do not provide H
-#    coord = coords, # but we provide the vector of median coordinates of the plots
-#    Dpropag = 0 , errWD = rep(0,nrow(NouraguesTrees)) # no error propagation on D and WD here
-#  )
+# H_chave_error_prop <- AGBmonteCarlo(
+#   D = NouraguesTrees$D, WD = NouraguesTrees$WD, # we do not provide H
+#   coord = coords, # but we provide the vector of median coordinates of the plots
+#   Dpropag = 0 , errWD = rep(0,nrow(NouraguesTrees)) # no error propagation on D and WD here
+# )
 
 ## ----error_prop---------------------------------------------------------------
 error_prop <- AGBmonteCarlo(
@@ -175,19 +175,19 @@ AGB_by_plot <- summaryByPlot(AGB_val = error_prop$AGB_simu, plot = NouraguesTree
 
 
 ## ----tricks_Hmix, eval = FALSE------------------------------------------------
-#  # NouraguesHD contains 163 trees that were not measured
-#  NouraguesHD$Hmix <- NouraguesHD$H
-#  NouraguesHD$RSEmix <- 0.5
-#  filt <- is.na(NouraguesHD$Hmix)
-#  NouraguesHD$Hmix[filt] <- retrieveH(NouraguesHD$D, model = HDmodel)$H[filt]
-#  NouraguesHD$RSEmix[filt] <- HDmodel$RSE
+# # NouraguesHD contains 163 trees that were not measured
+# NouraguesHD$Hmix <- NouraguesHD$H
+# NouraguesHD$RSEmix <- 0.5
+# filt <- is.na(NouraguesHD$Hmix)
+# NouraguesHD$Hmix[filt] <- retrieveH(NouraguesHD$D, model = HDmodel)$H[filt]
+# NouraguesHD$RSEmix[filt] <- HDmodel$RSE
 
 ## ----tricks_Hmix_prop, eval=FALSE---------------------------------------------
-#  wd <- getWoodDensity(NouraguesHD$genus, NouraguesHD$species)
-#  resultMC <- AGBmonteCarlo(
-#    D = NouraguesHD$D, WD = wd$meanWD, errWD = wd$sdWD,
-#    H = NouraguesHD$Hmix, errH = NouraguesHD$RSEmix,
-#    Dpropag = "chave2004"
-#  )
-#  summaryByPlot(AGB_val = resultMC$AGB_simu, plot = NouraguesHD$plotId, drawPlot = TRUE)
+# wd <- getWoodDensity(NouraguesHD$genus, NouraguesHD$species)
+# resultMC <- AGBmonteCarlo(
+#   D = NouraguesHD$D, WD = wd$meanWD, errWD = wd$sdWD,
+#   H = NouraguesHD$Hmix, errH = NouraguesHD$RSEmix,
+#   Dpropag = "chave2004"
+# )
+# summaryByPlot(AGB_val = resultMC$AGB_simu, plot = NouraguesHD$plotId, drawPlot = TRUE)
 

@@ -45,7 +45,7 @@ check_plot_trust_field <- check_plot_coord(
 kable(check_plot_trust_GPS$corner_coord, row.names = FALSE, caption = "Reference corner coordinates")
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  sf::st_write(check_plot_trust_GPS$polygon, "your_directory/plot201.shp")
+# sf::st_write(check_plot_trust_GPS$polygon, "your_directory/plot201.shp")
 
 ## -----------------------------------------------------------------------------
 plot201Trees <- NouraguesTrees[NouraguesTrees$Plot==201,]
@@ -174,13 +174,13 @@ subplot_metric <- subplot_summary(
   per_ha = FALSE)
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  # Set the CRS of the polygons
-#  subplot_polygons <- sf::st_set_crs(
-#    subplot_metric$polygon ,
-#    value = "EPSG:2972") # EPSG:2972 (corresponding to UTM Zone 22N) is the UTM coordinate system of Nouragues
-#  
-#  # Save the polygons in a shapefile
-#  sf::st_write(subplot_polygons, "your_directory/subplots_201.shp")
+# # Set the CRS of the polygons
+# subplot_polygons <- sf::st_set_crs(
+#   subplot_metric$polygon ,
+#   value = "EPSG:2972") # EPSG:2972 (corresponding to UTM Zone 22N) is the UTM coordinate system of Nouragues
+# 
+# # Save the polygons in a shapefile
+# sf::st_write(subplot_polygons, "your_directory/subplots_201.shp")
 
 ## ----subplot_summary_display_trees--------------------------------------------
 multiple_subplot_metric <- subplot_summary(
