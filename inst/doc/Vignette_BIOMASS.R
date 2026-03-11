@@ -170,6 +170,11 @@ error_prop <- AGBmonteCarlo(
 
 error_prop[(1:4)]
 
+## ----include=FALSE, eval=FALSE------------------------------------------------
+# # saving error_prop for the other vignette
+# error_prop$AGB_simu <- error_prop$AGB_simu[NouraguesTrees$Plot==201,1:200]
+# saveRDS(error_prop, file = "saved_data/error_prop.rds")
+
 ## ----summaryByPlot------------------------------------------------------------
 AGB_by_plot <- summaryByPlot(AGB_val = error_prop$AGB_simu, plot = NouraguesTrees$Plot, drawPlot = TRUE)
 
@@ -190,4 +195,44 @@ AGB_by_plot <- summaryByPlot(AGB_val = error_prop$AGB_simu, plot = NouraguesTree
 #   Dpropag = "chave2004"
 # )
 # summaryByPlot(AGB_val = resultMC$AGB_simu, plot = NouraguesHD$plotId, drawPlot = TRUE)
+
+## ----log2_bayesian, eval=FALSE------------------------------------------------
+# # First, define the user cache path
+# createCache("the_path_to_your_cache_folder")
+# # Or
+# options("BIOMASS.cache" = "the_path_to_your_cache_folder")
+# 
+# brm_model <- modelHD(
+#   D = NouraguesHD$D, H = NouraguesHD$H,
+#   method = "log2",
+#   bayesian = TRUE, useCache = TRUE)
+# 
+# H_brm_model <- retrieveH(
+#   D = NouraguesTrees$D,
+#   model = brm_model)
+# NouraguesTrees$H_model <-  H_brm_model$H
+
+## ----weibull_bayesian, eval=FALSE---------------------------------------------
+# brm_model <- modelHD(
+#   D = NouraguesHD$D, H = NouraguesHD$H,
+#   method = "weibull",
+#   bayesian = TRUE, useCache = TRUE)
+# 
+# plot(brm_model$model)
+
+## ----weibull_priors, eval=FALSE-----------------------------------------------
+# weibull_priors <- c(
+#   set_prior(prior = "uniform(0,80)", lb = 0, ub = 80, class = "b",nlpar = "a"),
+#   set_prior(prior = "uniform(0,100)", lb = 0, ub = 100, class = "b",nlpar = "b"),
+#   set_prior(prior = "uniform(0.01,0.99)", lb = 0.01, ub = 0.99, class = "b",nlpar = "c")
+# )
+# 
+# brm_model <- modelHD(D = NouraguesHD$D, H = NouraguesHD$H,
+#                      method = "weibull", bayesian = TRUE, useCache = TRUE,
+#                      prior = weibull_priors,
+#                      thin = 10, iter = 6000, warmup = 1000,
+#                      cores = 3 # number of cores = 3 since 3 chains are running
+# )
+# 
+# plot(brm_model$model)
 

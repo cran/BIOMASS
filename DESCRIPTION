@@ -2,20 +2,22 @@ Package: BIOMASS
 Type: Package
 Title: Estimating Aboveground Biomass and Its Uncertainty in Tropical
         Forests
-Version: 2.2.4-1
-Date: 2025-10-10
+Version: 2.2.7
+Date: 2026-03-10
 Authors@R: c(
-	person("Maxime", "Réjou-Méchain", email = "maxime.rejou@gmail.com", role = c("aut", "dtc")),
-	person("Guillaume","Cornu", email = "gcornu@cirad.fr", role = c("aut"), comment = c(ORCID="0000-0002-7523-5176")),	
 	person("Dominique", "Lamonica", email = "dominique.lamonica@ird.fr", role = c("aut","cre")),
+	person("Maxime", "Réjou-Méchain", email = "maxime.rejou@gmail.com", role = c("aut", "dtc")),
 	person("Arthur", "Bailly", email = "arthur.bailly@ird.fr ", role = c("aut")),
+	person("Guillaume","Cornu", email = "gcornu@cirad.fr", role = c("aut"), comment = c(ORCID="0000-0002-7523-5176")),	
+	person("John", "Godlee", email = "GodleeJ@si.edu", role = c("ctb")),
+	person("Fabian", "Fischer", email = "f.fischer@bristol.ac.uk", role = c("ctb")),
+	person("Jerome", "Chave", email = "jerome.chave@univ-tlse3.fr", role = c("ctb")),
 	person("Arthur", "Pere", role = c("aut")),
 	person("Ariane", "Tanguy", role = c("aut")),
-	person("Jerome", "Chave", email = "jerome.chave@univ-tlse3.fr", role = c("dtc")),
-	person("Ted", "Feldpausch", email = "T.R.Feldpausch@exeter.ac.uk", role = c("dtc")),
-	person("Philippe", "Verley", email = "philippe.verley@ird.fr ", role = c("ctb")),
 	person("Camille", "Piponiot", role = c("aut")),
-	person("Bruno", "Hérault", email = "bruno.herault@cirad.fr", role = c("aut"))
+	person("Bruno", "Hérault", email = "bruno.herault@cirad.fr", role = c("aut")),
+	person("Philippe", "Verley", email = "philippe.verley@ird.fr ", role = c("ctb")),
+	person("Ted", "Feldpausch", email = "T.R.Feldpausch@exeter.ac.uk", role = c("dtc"))
   )
 Description: Contains functions for estimating above-ground biomass/carbon and its uncertainty in tropical forests. These functions allow to (1) retrieve and correct taxonomy, (2) estimate wood density and its uncertainty, (3) build height-diameter models, (4) manage tree and plot coordinates, (5) estimate above-ground biomass/carbon at stand level with associated uncertainty. To cite ‘BIOMASS’, please use citation(‘BIOMASS’). For more information, see Réjou-Méchain et al. (2017) <doi:10.1111/2041-210X.12753>.
 License: GPL-2
@@ -29,21 +31,23 @@ Imports: minpack.lm, jsonlite, methods, proj4, graphics, stats, utils,
         data.table (>= 1.9.8), rappdirs, sf, terra, ggplot2
 VignetteBuilder: knitr
 Suggests: knitr, rmarkdown, prettydoc, testthat, vdiffr, curl, geodata,
-        httr2, pkgdown, dplyr
-RoxygenNote: 7.3.2
+        httr2, pkgdown, dplyr, brms, BH, RcppEigen
+RoxygenNote: 7.3.3
 NeedsCompilation: no
-Packaged: 2025-10-10 14:46:13 UTC; lamonica
-Author: Maxime Réjou-Méchain [aut, dtc],
-  Guillaume Cornu [aut] (ORCID: <https://orcid.org/0000-0002-7523-5176>),
-  Dominique Lamonica [aut, cre],
+Packaged: 2026-03-10 17:47:10 UTC; lamonica
+Author: Dominique Lamonica [aut, cre],
+  Maxime Réjou-Méchain [aut, dtc],
   Arthur Bailly [aut],
+  Guillaume Cornu [aut] (ORCID: <https://orcid.org/0000-0002-7523-5176>),
+  John Godlee [ctb],
+  Fabian Fischer [ctb],
+  Jerome Chave [ctb],
   Arthur Pere [aut],
   Ariane Tanguy [aut],
-  Jerome Chave [dtc],
-  Ted Feldpausch [dtc],
-  Philippe Verley [ctb],
   Camille Piponiot [aut],
-  Bruno Hérault [aut]
+  Bruno Hérault [aut],
+  Philippe Verley [ctb],
+  Ted Feldpausch [dtc]
 Maintainer: Dominique Lamonica <dominique.lamonica@ird.fr>
 Repository: CRAN
-Date/Publication: 2025-10-10 15:20:02 UTC
+Date/Publication: 2026-03-11 06:30:37 UTC
