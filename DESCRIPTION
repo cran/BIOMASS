@@ -2,8 +2,8 @@ Package: BIOMASS
 Type: Package
 Title: Estimating Aboveground Biomass and Its Uncertainty in Tropical
         Forests
-Version: 2.2.7
-Date: 2026-03-10
+Version: 2.2.7-1
+Date: 2026-06-26
 Authors@R: c(
 	person("Dominique", "Lamonica", email = "dominique.lamonica@ird.fr", role = c("aut","cre")),
 	person("Maxime", "Réjou-Méchain", email = "maxime.rejou@gmail.com", role = c("aut", "dtc")),
@@ -28,13 +28,13 @@ URL: https://umr-amap.github.io/BIOMASS/,
         https://github.com/umr-amap/BIOMASS/
 BugReports: https://github.com/umr-amap/BIOMASS/issues/
 Imports: minpack.lm, jsonlite, methods, proj4, graphics, stats, utils,
-        data.table (>= 1.9.8), rappdirs, sf, terra, ggplot2
+        data.table (>= 1.9.8), rappdirs, sf, terra, ggplot2, ggnewscale
 VignetteBuilder: knitr
 Suggests: knitr, rmarkdown, prettydoc, testthat, vdiffr, curl, geodata,
         httr2, pkgdown, dplyr, brms, BH, RcppEigen
-RoxygenNote: 7.3.3
+Config/roxygen2/version: 8.0.0
 NeedsCompilation: no
-Packaged: 2026-03-10 17:47:10 UTC; lamonica
+Packaged: 2026-06-26 14:13:28 UTC; lamonica
 Author: Dominique Lamonica [aut, cre],
   Maxime Réjou-Méchain [aut, dtc],
   Arthur Bailly [aut],
@@ -50,4 +50,4 @@ Author: Dominique Lamonica [aut, cre],
   Ted Feldpausch [dtc]
 Maintainer: Dominique Lamonica <dominique.lamonica@ird.fr>
 Repository: CRAN
-Date/Publication: 2026-03-11 06:30:37 UTC
+Date/Publication: 2026-06-29 06:42:03 UTC
